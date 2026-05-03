@@ -11,12 +11,19 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public String getName() { return name; }
-    public double getPrice() { return price; }
-    public int getQuantity() { return quantity; }
+    public String getName() {
+        return name;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
 
     public void setQuantity(int quantity) {
-        if (quantity >= 0) this.quantity = quantity;
+        if (quantity >= 0)
+            this.quantity = quantity;
     }
 
     @Override
