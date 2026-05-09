@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Vending Machine — MVC Folder Structure</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9f9f7;color:#1a1a18;padding:24px;}
+.explorer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:12px;min-height:520px;}
+.tree-panel{border:0.5px solid #d3d1c7;border-radius:12px;overflow:hidden;background:#fff;}
+.detail-panel{border:0.5px solid #d3d1c7;border-radius:12px;overflow:hidden;background:#fff;}
+.panel-header{padding:10px 14px;border-bottom:0.5px solid #d3d1c7;font-size:12px;font-weight:500;color:#73726c;background:#f1efe8;}
+.tree-body{padding:8px 4px;font-family:'SF Mono',Consolas,monospace;font-size:12px;}
+.tree-item{display:flex;align-items:center;gap:6px;padding:3px 8px;border-radius:6px;cursor:pointer;color:#73726c;transition:background 0.1s;}
+.tree-item:hover{background:#f1efe8;}
+.tree-item.active{background:#e6f1fb;color:#0c447c;}
+.tree-item.folder{color:#1a1a18;font-weight:500;cursor:default;}
+.tree-item.layer-header{margin-top:8px;margin-bottom:2px;font-size:10px;font-weight:500;letter-spacing:0.06em;color:#b4b2a9;padding-left:8px;cursor:default;}
+.tree-item.layer-header:hover{background:transparent;}
+.indent1{padding-left:20px;}
+.indent2{padding-left:36px;}
+.indent3{padding-left:52px;}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dot-purple{background:#534AB7;}
+.dot-teal{background:#1D9E75;}
+.dot-coral{background:#D85A30;}
+.dot-blue{background:#378ADD;}
+.dot-amber{background:#BA7517;}
+.dot-pink{background:#D4537E;}
+.dot-gray{background:#888780;}
+.dot-green{background:#639922;}
+.detail-body{padding:14px;}
+.detail-title{font-size:14px;font-weight:500;color:#1a1a18;margin-bottom:4px;}
+.detail-path{font-size:11px;font-family:'SF Mono',Consolas,monospace;color:#b4b2a9;margin-bottom:10px;}
+.detail-desc{font-size:13px;color:#73726c;line-height:1.7;margin-bottom:12px;}
+.detail-role{font-size:11px;font-weight:500;color:#b4b2a9;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.code-block{background:#f1efe8;border:0.5px solid #d3d1c7;border-radius:8px;padding:10px 12px;font-family:'SF Mono',Consolas,monospace;font-size:11px;color:#73726c;line-height:1.8;overflow-x:auto;}
+.kw{color:#534AB7;font-weight:500;}
+.cn{color:#1D9E75;font-weight:500;}
+.cm{color:#888780;}
+.st{color:#D85A30;}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:12px;margin-right:4px;margin-bottom:4px;}
+.badge-m{background:#EEEDFE;color:#3C3489;}
+.badge-v{background:#E1F5EE;color:#085041;}
+.badge-c{background:#FAECE7;color:#712B13;}
+.badge-s{background:#E6F1FB;color:#0C447C;}
+.badge-u{background:#FAEEDA;color:#633806;}
+.badge-d{background:#EAF3DE;color:#27500A;}
+.layer-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;margin-right:6px;margin-bottom:6px;}
+.lp-m{background:#EEEDFE;color:#3C3489;}
+.lp-v{background:#E1F5EE;color:#085041;}
+.lp-c{background:#FAECE7;color:#712B13;}
+.lp-s{background:#E6F1FB;color:#0C447C;}
+.lp-u{background:#FAEEDA;color:#633806;}
+.lp-d{background:#EAF3DE;color:#27500A;}
+.mvc-legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+h1{font-size:18px;font-weight:500;margin-bottom:4px;color:#1a1a18;}
+.subtitle{font-size:13px;color:#73726c;margin-bottom:16px;}
+</style>
+</head>
+<body>
+
+<h1>Smart Vending Machine System</h1>
+<p class="subtitle">MVC Folder Structure — Java Spring Boot + Next.js + MySQL &nbsp;·&nbsp; Haiqa Khalil &nbsp;·&nbsp; 2025-CYS-57</p>
+
+<div class="mvc-legend">
+  <span class="layer-pill lp-m">M — Model (OOP classes + entities)</span>
+  <span class="layer-pill lp-v">V — View (Next.js frontend)</span>
+  <span class="layer-pill lp-c">C — Controller (Spring Boot REST API)</span>
+  <span class="layer-pill lp-u">U — Utils (helpers + config)</span>
+  <span class="layer-pill lp-d">D — Database (MySQL schema)</span>
+</div>
+
+<div class="explorer">
+
+<div class="tree-panel">
+  <div class="panel-header">SmartVendingMachine/ — project root</div>
+  <div class="tree-body">
+
+    <div class="tree-item layer-header">BACKEND — Java Spring Boot</div>
+
+    <div class="tree-item folder">📁 src/main/java/com/vendingmachine/</div>
+
+    <div class="tree-item indent1 folder">📁 models/</div>
+    <div class="tree-item indent2" onclick="show('item')"><span class="dot dot-purple"></span>Item.java</div>
+    <div class="tree-item indent2" onclick="show('vm')"><span class="dot dot-purple"></span>VendingMachine.java</div>
+    <div class="tree-item indent2" onclick="show('pm')"><span class="dot dot-purple"></span>PaymentMethod.java</div>
+    <div class="tree-item indent2" onclick="show('cash')"><span class="dot dot-purple"></span>CashPayment.java</div>
+    <div class="tree-item indent2" onclick="show('card')"><span class="dot dot-purple"></span>CardPayment.java</div>
+    <div class="tree-item indent2" onclick="show('nfc')"><span class="dot dot-purple"></span>NFCPayment.java</div>
+    <div class="tree-item indent2" onclick="show('transaction')"><span class="dot dot-purple"></span>Transaction.java</div>
+    <div class="tree-item indent2" onclick="show('operator')"><span class="dot dot-purple"></span>Operator.java</div>
+    <div class="tree-item indent2" onclick="show('restock')"><span class="dot dot-purple"></span>RestockLog.java</div>
+
+    <div class="tree-item indent1 folder">📁 controllers/</div>
+    <div class="tree-item indent2" onclick="show('vc')"><span class="dot dot-coral"></span>VendingController.java</div>
+    <div class="tree-item indent2" onclick="show('ic')"><span class="dot dot-coral"></span>ItemController.java</div>
+    <div class="tree-item indent2" onclick="show('tc')"><span class="dot dot-coral"></span>TransactionController.java</div>
+    <div class="tree-item indent2" onclick="show('oc')"><span class="dot dot-coral"></span>OperatorController.java</div>
+    <div class="tree-item indent2" onclick="show('rc')"><span class="dot dot-coral"></span>RestockController.java</div>
+
+    <div class="tree-item indent1 folder">📁 views/</div>
+    <div class="tree-item indent2" onclick="show('cv')"><span class="dot dot-teal"></span>ConsoleView.java</div>
+
+    <div class="tree-item indent1 folder">📁 utils/</div>
+    <div class="tree-item indent2" onclick="show('fh')"><span class="dot dot-amber"></span>FileHandler.java</div>
+    <div class="tree-item indent2" onclick="show('dbh')"><span class="dot dot-amber"></span>DatabaseHelper.java</div>
+
+    <div class="tree-item indent1 folder">📁 config/</div>
+    <div class="tree-item indent2" onclick="show('cors')"><span class="dot dot-gray"></span>CorsConfig.java</div>
+
+    <div class="tree-item indent1" onclick="show('main')">📄 SmartVendingMachineApplication.java</div>
+
+    <div class="tree-item layer-header" style="margin-top:10px;">DATABASE — MySQL</div>
+    <div class="tree-item folder indent1">📁 src/main/resources/</div>
+    <div class="tree-item indent2" onclick="show('schema')"><span class="dot dot-green"></span>schema.sql</div>
+    <div class="tree-item indent2" onclick="show('props')"><span class="dot dot-gray"></span>application.properties</div>
+
+    <div class="tree-item layer-header" style="margin-top:10px;">FRONTEND — Next.js (View Layer)</div>
+    <div class="tree-item folder">📁 frontend/</div>
+    <div class="tree-item indent1 folder">📁 app/</div>
+    <div class="tree-item indent2" onclick="show('home')"><span class="dot dot-teal"></span>page.tsx</div>
+    <div class="tree-item indent2" onclick="show('admin')"><span class="dot dot-teal"></span>admin/page.tsx</div>
+    <div class="tree-item indent1 folder">📁 components/</div>
+    <div class="tree-item indent2" onclick="show('itemcard')"><span class="dot dot-teal"></span>ItemCard.tsx</div>
+    <div class="tree-item indent2" onclick="show('paymodal')"><span class="dot dot-teal"></span>PaymentModal.tsx</div>
+    <div class="tree-item indent2" onclick="show('dashboard')"><span class="dot dot-teal"></span>AdminDashboard.tsx</div>
+    <div class="tree-item indent2" onclick="show('restockpanel')"><span class="dot dot-teal"></span>RestockPanel.tsx</div>
+    <div class="tree-item indent1 folder">📁 lib/</div>
+    <div class="tree-item indent2" onclick="show('api')"><span class="dot dot-amber"></span>api.ts</div>
+
+    <div class="tree-item layer-header" style="margin-top:10px;">DATA STORAGE</div>
+    <div class="tree-item folder">📁 data/</div>
+    <div class="tree-item indent1" onclick="show('saleslog')"><span class="dot dot-amber"></span>sales_log.txt</div>
+
+    <div class="tree-item layer-header" style="margin-top:10px;">PROJECT CONFIG</div>
+    <div class="tree-item" onclick="show('pom')"><span class="dot dot-gray"></span>pom.xml</div>
+
+  </div>
+</div>
+
+<div class="detail-panel">
+  <div class="panel-header" id="detail-header">Click any file to see details</div>
+  <div class="detail-body" id="detail-body">
+    <div style="color:#b4b2a9;font-size:13px;padding-top:20px;text-align:center;">Select a file from the tree to view its role and sample code.</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const data = {
+  item:{title:'Item.java',path:'models/Item.java',badges:['M'],desc:'Core OOP model class. Represents a single product in the vending machine. Annotated with @Entity for MySQL mapping via JPA. Demonstrates encapsulation — all fields are private with getters and setters. The foundation of the entire system.',code:`<span class="cm">// MODEL layer — OOP entity</span>
+<span class="kw">@Entity</span> <span class="kw">@Table</span>(name = <span class="st">"items"</span>)
+<span class="kw">public class</span> <span class="cn">Item</span> {
+  <span class="kw">@Id @GeneratedValue</span>
+  <span class="kw">private</span> Long id;
+  <span class="kw">private</span> String name;
+  <span class="kw">private</span> double price;
+  <span class="kw">private</span> int quantity;
+  <span class="kw">private</span> String category;
+  <span class="cm">// getters / setters / constructors</span>
+}`},
+
+  vm:{title:'VendingMachine.java',path:'models/VendingMachine.java',badges:['M'],desc:'Represents the vending machine itself. Manages the inventory using an ArrayList of Items. Contains methods to add, remove, and display items. Also checks for low stock and triggers alerts when quantity drops below 2.',code:`<span class="kw">public class</span> <span class="cn">VendingMachine</span> {
+  <span class="kw">private</span> String machineName;
+  <span class="kw">private</span> ArrayList&lt;Item&gt; inventory;
+
+  <span class="kw">public void</span> addItem(Item item) { ... }
+  <span class="kw">public void</span> showInventory() { ... }
+  <span class="kw">public</span> Item getItem(<span class="kw">int</span> index) { ... }
+  <span class="kw">public boolean</span> isLowStock(Item item) {
+    <span class="kw">return</span> item.getQuantity() &lt; 2;
+  }
+}`},
+
+  pm:{title:'PaymentMethod.java',path:'models/PaymentMethod.java',badges:['M'],desc:'A Java interface — defines the contract for all payment types. Any class that implements this interface must provide a pay() method and a getPaymentType() method. This is the core of polymorphism in this project.',code:`<span class="cm">// ABSTRACTION — interface contract</span>
+<span class="kw">public interface</span> <span class="cn">PaymentMethod</span> {
+  <span class="kw">boolean</span> pay(<span class="kw">double</span> amount);
+  String getPaymentType();
+}`},
+
+  cash:{title:'CashPayment.java',path:'models/CashPayment.java',badges:['M'],desc:'Implements the PaymentMethod interface for cash transactions. Accepts the amount of cash given by the user, compares it to the item price, and calculates change. Returns false if cash is insufficient.',code:`<span class="kw">public class</span> <span class="cn">CashPayment</span> <span class="kw">implements</span> <span class="cn">PaymentMethod</span> {
+  <span class="kw">private double</span> cashGiven;
+
+  <span class="kw">@Override</span>
+  <span class="kw">public boolean</span> pay(<span class="kw">double</span> amount) {
+    <span class="kw">if</span> (cashGiven &gt;= amount) {
+      <span class="cm">// return change to user</span>
+      <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>; <span class="cm">// insufficient cash</span>
+  }
+}`},
+
+  card:{title:'CardPayment.java',path:'models/CardPayment.java',badges:['M'],desc:'Implements the PaymentMethod interface for card transactions. Takes a card number, simulates a card payment process, and returns true on success. In a real system, this would call a payment gateway API.',code:`<span class="kw">public class</span> <span class="cn">CardPayment</span> <span class="kw">implements</span> <span class="cn">PaymentMethod</span> {
+  <span class="kw">private</span> String cardNumber;
+
+  <span class="kw">@Override</span>
+  <span class="kw">public boolean</span> pay(<span class="kw">double</span> amount) {
+    <span class="cm">// simulate card authorization</span>
+    <span class="kw">return true</span>;
+  }
+}`},
+
+  nfc:{title:'NFCPayment.java',path:'models/NFCPayment.java',badges:['M'],desc:'Implements the PaymentMethod interface for NFC tap-to-pay. The simplest payment class — no fields required. The user just taps their device and payment is instantly approved.',code:`<span class="kw">public class</span> <span class="cn">NFCPayment</span> <span class="kw">implements</span> <span class="cn">PaymentMethod</span> {
+
+  <span class="kw">@Override</span>
+  <span class="kw">public boolean</span> pay(<span class="kw">double</span> amount) {
+    <span class="cm">// NFC tap — instant approval</span>
+    <span class="kw">return true</span>;
+  }
+
+  <span class="kw">@Override</span>
+  <span class="kw">public</span> String getPaymentType() { <span class="kw">return</span> <span class="st">"NFC"</span>; }
+}`},
+
+  transaction:{title:'Transaction.java',path:'models/Transaction.java',badges:['M'],desc:'Entity class for recording every purchase. Stores the item name, amount paid, payment type, and timestamp. Mapped to the transactions table in MySQL. Used by the admin dashboard to display sales history.',code:`<span class="kw">@Entity</span> <span class="kw">@Table</span>(name = <span class="st">"transactions"</span>)
+<span class="kw">public class</span> <span class="cn">Transaction</span> {
+  <span class="kw">@Id @GeneratedValue</span>
+  <span class="kw">private</span> Long id;
+  <span class="kw">private</span> String itemName;
+  <span class="kw">private double</span> amount;
+  <span class="kw">private</span> String paymentType;
+  <span class="kw">private</span> LocalDateTime purchasedAt;
+}`},
+
+  operator:{title:'Operator.java',path:'models/Operator.java',badges:['M'],desc:'Entity class for vending machine operators (admins). Stores username, hashed password, name, and role. Used for login authentication. Operators can manage inventory, view logs, and restock items.',code:`<span class="kw">@Entity</span> <span class="kw">@Table</span>(name = <span class="st">"operators"</span>)
+<span class="kw">public class</span> <span class="cn">Operator</span> {
+  <span class="kw">@Id @GeneratedValue</span>
+  <span class="kw">private</span> Long id;
+  <span class="kw">private</span> String name;
+  <span class="kw">private</span> String username;
+  <span class="kw">private</span> String passwordHash;
+  <span class="kw">private</span> String role; <span class="cm">// "ADMIN" | "STAFF"</span>
+}`},
+
+  restock:{title:'RestockLog.java',path:'models/RestockLog.java',badges:['M'],desc:'Entity class that records every restocking event. When an operator adds stock to an item, a RestockLog entry is created. Linked to the item and operator via foreign keys. Stored in the restock_log table.',code:`<span class="kw">@Entity</span> <span class="kw">@Table</span>(name = <span class="st">"restock_log"</span>)
+<span class="kw">public class</span> <span class="cn">RestockLog</span> {
+  <span class="kw">@Id @GeneratedValue</span>
+  <span class="kw">private</span> Long id;
+  <span class="kw">@ManyToOne private</span> <span class="cn">Item</span> item;
+  <span class="kw">@ManyToOne private</span> <span class="cn">Operator</span> operator;
+  <span class="kw">private int</span> quantityAdded;
+  <span class="kw">private</span> LocalDateTime restockedAt;
+}`},
+
+  vc:{title:'VendingController.java',path:'controllers/VendingController.java',badges:['C'],desc:'The main REST controller — handles the buy item flow. Receives purchase requests from the Next.js frontend, validates item availability, processes payment, updates inventory in MySQL, and logs the transaction. No business logic lives here — it delegates to models.',code:`<span class="kw">@RestController</span>
+<span class="kw">@RequestMapping</span>(<span class="st">"/api/vending"</span>)
+<span class="kw">public class</span> <span class="cn">VendingController</span> {
+
+  <span class="kw">@PostMapping</span>(<span class="st">"/buy"</span>)
+  <span class="kw">public</span> ResponseEntity buyItem(
+      <span class="kw">@RequestBody</span> BuyRequest req) {
+    <span class="cm">// validate → pay → dispense → log</span>
+    <span class="kw">return</span> ResponseEntity.ok(result);
+  }
+}`},
+
+  ic:{title:'ItemController.java',path:'controllers/ItemController.java',badges:['C'],desc:'Handles all CRUD operations for items — Create, Read, Update, Delete. The Next.js frontend calls GET /api/items to fetch the product list for display, and the admin panel calls POST/PUT/DELETE to manage inventory.',code:`<span class="kw">@RestController</span>
+<span class="kw">@RequestMapping</span>(<span class="st">"/api/items"</span>)
+<span class="kw">public class</span> <span class="cn">ItemController</span> {
+
+  <span class="kw">@GetMapping</span>   <span class="cm">// GET /api/items</span>
+  <span class="kw">public</span> List&lt;Item&gt; getAllItems() { ... }
+
+  <span class="kw">@PostMapping</span>  <span class="cm">// POST /api/items</span>
+  <span class="kw">public</span> Item addItem(<span class="kw">@RequestBody</span> Item item) { ... }
+
+  <span class="kw">@DeleteMapping</span>(<span class="st">"/{id}"</span>)
+  <span class="kw">public void</span> deleteItem(<span class="kw">@PathVariable</span> Long id) { ... }
+}`},
+
+  tc:{title:'TransactionController.java',path:'controllers/TransactionController.java',badges:['C'],desc:'Manages the transaction log. Exposes endpoints to save new transactions after a purchase and to retrieve all past transactions for the admin sales dashboard. All records come from the transactions MySQL table.',code:`<span class="kw">@RestController</span>
+<span class="kw">@RequestMapping</span>(<span class="st">"/api/transactions"</span>)
+<span class="kw">public class</span> <span class="cn">TransactionController</span> {
+
+  <span class="kw">@GetMapping</span>
+  <span class="kw">public</span> List&lt;Transaction&gt; getAll() { ... }
+
+  <span class="kw">@PostMapping</span>
+  <span class="kw">public</span> Transaction save(
+      <span class="kw">@RequestBody</span> Transaction t) { ... }
+}`},
+
+  oc:{title:'OperatorController.java',path:'controllers/OperatorController.java',badges:['C'],desc:'Handles operator authentication. The admin login page sends credentials to POST /api/operators/login, which verifies the hashed password and returns a success or failure response. Only authenticated operators can access the admin dashboard.',code:`<span class="kw">@RestController</span>
+<span class="kw">@RequestMapping</span>(<span class="st">"/api/operators"</span>)
+<span class="kw">public class</span> <span class="cn">OperatorController</span> {
+
+  <span class="kw">@PostMapping</span>(<span class="st">"/login"</span>)
+  <span class="kw">public</span> ResponseEntity login(
+      <span class="kw">@RequestBody</span> LoginRequest req) {
+    <span class="cm">// verify credentials, return status</span>
+  }
+}`},
+
+  rc:{title:'RestockController.java',path:'controllers/RestockController.java',badges:['C'],desc:'Handles restocking operations. When an operator adds stock to an item via the admin panel, this controller updates the item quantity in MySQL and creates a RestockLog entry for audit tracking.',code:`<span class="kw">@RestController</span>
+<span class="kw">@RequestMapping</span>(<span class="st">"/api/restock"</span>)
+<span class="kw">public class</span> <span class="cn">RestockController</span> {
+
+  <span class="kw">@PostMapping</span>
+  <span class="kw">public</span> RestockLog restock(
+      <span class="kw">@RequestBody</span> RestockRequest req) {
+    <span class="cm">// update item qty + save log</span>
+  }
+
+  <span class="kw">@GetMapping</span>(<span class="st">"/logs"</span>)
+  <span class="kw">public</span> List&lt;RestockLog&gt; getLogs() { ... }
+}`},
+
+  cv:{title:'ConsoleView.java',path:'views/ConsoleView.java',badges:['V'],desc:'Console-based user interface for local testing. Displays the item menu, accepts keyboard input, and processes purchases without a browser. Useful during development before the Next.js frontend is connected.',code:`<span class="kw">public class</span> <span class="cn">ConsoleView</span> {
+  <span class="kw">private</span> Scanner scanner;
+
+  <span class="kw">public void</span> start() {
+    System.out.println(<span class="st">"Welcome to Vend-O-Buddy!"</span>);
+    <span class="cm">// show menu → take input → process</span>
+  }
+
+  <span class="kw">private void</span> buyItem() {
+    <span class="cm">// collect item choice + payment type</span>
+  }
+}`},
+
+  fh:{title:'FileHandler.java',path:'utils/FileHandler.java',badges:['U'],desc:'Utility class for file-based transaction logging. Appends every purchase to sales_log.txt with a timestamp, item name, price, and payment type. Acts as a backup alongside MySQL and demonstrates Java file I/O (BufferedWriter, FileWriter).',code:`<span class="kw">public class</span> <span class="cn">FileHandler</span> {
+  <span class="kw">private static final</span> String LOG = <span class="st">"sales_log.txt"</span>;
+
+  <span class="kw">public static void</span> logTransaction(
+      Item item, String paymentType) {
+    <span class="cm">// append timestamped line to file</span>
+    <span class="cm">// uses BufferedWriter + FileWriter</span>
+  }
+
+  <span class="kw">public static void</span> showLogs() {
+    <span class="cm">// read and print all log lines</span>
+  }
+}`},
+
+  dbh:{title:'DatabaseHelper.java',path:'utils/DatabaseHelper.java',badges:['U'],desc:'Manages the MySQL database connection using JDBC. Provides static methods to save items, load items, save transactions, and retrieve all records. Used by controllers and the main application to interact with the database.',code:`<span class="kw">public class</span> <span class="cn">DatabaseHelper</span> {
+  <span class="kw">private static</span> Connection conn;
+
+  <span class="kw">public static</span> Connection getConnection() {
+    <span class="cm">// returns active MySQL JDBC connection</span>
+  }
+
+  <span class="kw">public static void</span> saveItem(Item item) { ... }
+  <span class="kw">public static</span> List&lt;Item&gt; getItems() { ... }
+  <span class="kw">public static void</span> saveTransaction(Transaction t) { ... }
+}`},
+
+  cors:{title:'CorsConfig.java',path:'config/CorsConfig.java',badges:['U'],desc:'Cross-Origin Resource Sharing configuration. Required to allow the Next.js frontend (running on localhost:3000) to make API calls to the Spring Boot backend (localhost:8080). Without this, the browser blocks all requests.',code:`<span class="kw">@Configuration</span>
+<span class="kw">public class</span> <span class="cn">CorsConfig</span> {
+
+  <span class="kw">@Bean</span>
+  <span class="kw">public</span> WebMvcConfigurer corsConfigurer() {
+    <span class="kw">return new</span> WebMvcConfigurer() {
+      <span class="kw">public void</span> addCorsMappings(
+          CorsRegistry registry) {
+        registry.addMapping(<span class="st">"/api/**"</span>)
+          .allowedOrigins(<span class="st">"http://localhost:3000"</span>);
+      }
+    };
+  }
+}`},
+
+  main:{title:'SmartVendingMachineApplication.java',path:'SmartVendingMachineApplication.java',badges:['U'],desc:'The main entry point of the Spring Boot application. Starts the embedded Tomcat server, loads all beans and configurations, and makes the REST API available. This is the file that runs when you click Run in IntelliJ.',code:`<span class="kw">@SpringBootApplication</span>
+<span class="kw">public class</span> <span class="cn">SmartVendingMachineApplication</span> {
+
+  <span class="kw">public static void</span> main(String[] args) {
+    SpringApplication.run(
+      SmartVendingMachineApplication.<span class="kw">class</span>,
+      args
+    );
+  }
+}`},
+
+  schema:{title:'schema.sql',path:'resources/schema.sql',badges:['D'],desc:'MySQL schema file. Defines all four tables — items, transactions, operators, and restock_log. Spring Boot runs this automatically on startup. This is the single source of truth for the entire database structure.',code:`<span class="kw">CREATE TABLE IF NOT EXISTS</span> items (
+  id         <span class="kw">INT</span> AUTO_INCREMENT <span class="kw">PRIMARY KEY</span>,
+  name       <span class="kw">VARCHAR</span>(100),
+  price      <span class="kw">DECIMAL</span>(10,2),
+  quantity   <span class="kw">INT</span>,
+  category   <span class="kw">VARCHAR</span>(50)
+);
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> transactions ( ... );
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> operators ( ... );
+<span class="kw">CREATE TABLE IF NOT EXISTS</span> restock_log ( ... );`},
+
+  props:{title:'application.properties',path:'resources/application.properties',badges:['U'],desc:'Spring Boot configuration file. Specifies the MySQL connection URL, credentials, server port, and JPA settings. Spring Boot reads this file on startup to connect to the database and configure the application.',code:`server.port=8080
+spring.datasource.url=jdbc:mysql://localhost/vendingdb
+spring.datasource.username=root
+spring.datasource.password=yourpassword
+spring.jpa.hibernate.ddl-auto=update
+spring.sql.init.mode=always`},
+
+  home:{title:'page.tsx (Home)',path:'frontend/app/page.tsx',badges:['V'],desc:'The main customer-facing vending machine page. Fetches all items from GET /api/items and renders them as product cards. When a user clicks Buy on a card, the PaymentModal opens for payment selection.',code:`<span class="kw">export default function</span> <span class="cn">Home</span>() {
+  <span class="cm">// fetch items from Spring Boot API</span>
+  <span class="kw">const</span> [items, setItems] = useState([]);
+
+  <span class="kw">return</span> (
+    &lt;main&gt;
+      &lt;<span class="cn">ItemCard</span> items={items} /&gt;
+      &lt;<span class="cn">PaymentModal</span> /&gt;
+    &lt;/main&gt;
+  );
+}`},
+
+  admin:{title:'admin/page.tsx',path:'frontend/app/admin/page.tsx',badges:['V'],desc:'The operator admin dashboard page. Protected route — only accessible after operator login. Displays the full admin control panel with inventory management, sales logs, and restock history.',code:`<span class="kw">export default function</span> <span class="cn">AdminPage</span>() {
+  <span class="kw">return</span> (
+    &lt;main&gt;
+      &lt;<span class="cn">AdminDashboard</span> /&gt;
+      &lt;<span class="cn">RestockPanel</span> /&gt;
+    &lt;/main&gt;
+  );
+}`},
+
+  itemcard:{title:'ItemCard.tsx',path:'frontend/components/ItemCard.tsx',badges:['V'],desc:'A reusable component that displays a single vending machine product. Shows the item name, category, price, and remaining stock. Displays a low-stock warning badge when quantity is below 2. Has a Buy button that opens the PaymentModal.',code:`<span class="kw">export function</span> <span class="cn">ItemCard</span>({ item, onBuy }) {
+  <span class="kw">return</span> (
+    &lt;div className=<span class="st">"card"</span>&gt;
+      &lt;h3&gt;{item.name}&lt;/h3&gt;
+      &lt;p&gt;Rs. {item.price}&lt;/p&gt;
+      &lt;p&gt;Stock: {item.quantity}&lt;/p&gt;
+      {item.quantity &lt; 2 &amp;&amp;
+        &lt;span&gt;Low Stock!&lt;/span&gt;}
+      &lt;button onClick={onBuy}&gt;Buy&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}`},
+
+  paymodal:{title:'PaymentModal.tsx',path:'frontend/components/PaymentModal.tsx',badges:['V'],desc:'A modal dialog that appears when the user clicks Buy. Lets the user select a payment method — Cash (with amount input), Card (with card number), or NFC (one tap). Sends a POST request to /api/vending/buy with the order details.',code:`<span class="kw">export function</span> <span class="cn">PaymentModal</span>({ item, onClose }) {
+  <span class="cm">// state: selectedMethod, cashAmount, cardNum</span>
+
+  <span class="kw">const</span> handlePay = async () => {
+    <span class="kw">await</span> buyItem({ itemId, method, amount });
+    onClose();
+  };
+
+  <span class="kw">return</span> (
+    &lt;div className=<span class="st">"modal"</span>&gt;
+      <span class="cm">{/* Cash / Card / NFC tabs */}</span>
+    &lt;/div&gt;
+  );
+}`},
+
+  dashboard:{title:'AdminDashboard.tsx',path:'frontend/components/AdminDashboard.tsx',badges:['V'],desc:'The main admin control panel component. Fetches items, transactions, and restock logs from the backend. Allows the operator to add new items, update prices, delete products, and view the full sales history table.',code:`<span class="kw">export function</span> <span class="cn">AdminDashboard</span>() {
+  <span class="cm">// fetch /api/items + /api/transactions</span>
+
+  <span class="kw">return</span> (
+    &lt;div&gt;
+      &lt;<span class="cn">ItemsTable</span> items={items} /&gt;
+      &lt;<span class="cn">SalesLog</span> transactions={txns} /&gt;
+    &lt;/div&gt;
+  );
+}`},
+
+  restockpanel:{title:'RestockPanel.tsx',path:'frontend/components/RestockPanel.tsx',badges:['V'],desc:'Component for the operator to restock items. Displays all items with current stock levels. The operator enters a quantity to add and clicks Restock — this calls POST /api/restock which updates MySQL and creates a RestockLog entry.',code:`<span class="kw">export function</span> <span class="cn">RestockPanel</span>() {
+  <span class="kw">const</span> handleRestock = async (itemId, qty) => {
+    <span class="kw">await</span> restockItem({ itemId, quantityAdded: qty });
+    <span class="cm">// refresh item list after restock</span>
+  };
+  <span class="kw">return</span> (
+    &lt;div&gt;<span class="cm">{/* restock form per item */}</span>&lt;/div&gt;
+  );
+}`},
+
+  api:{title:'api.ts',path:'frontend/lib/api.ts',badges:['U'],desc:'Centralized API client for the Next.js frontend. All HTTP calls to the Spring Boot backend are defined here. Components import from this file rather than writing fetch() calls themselves. Keeps the API base URL in one place.',code:`<span class="kw">const</span> BASE = <span class="st">"http://localhost:8080/api"</span>;
+
+<span class="kw">export const</span> getItems = () =>
+  fetch(<span class="st">\`\${BASE}/items\`</span>).then(r => r.json());
+
+<span class="kw">export const</span> buyItem = (data) =>
+  fetch(<span class="st">\`\${BASE}/vending/buy\`</span>, {
+    method: <span class="st">"POST"</span>,
+    headers: { <span class="st">"Content-Type"</span>: <span class="st">"application/json"</span> },
+    body: JSON.stringify(data)
+  }).then(r => r.json());
+
+<span class="kw">export const</span> restockItem = (data) =>
+  fetch(<span class="st">\`\${BASE}/restock\`</span>, { method: <span class="st">"POST"</span>, ... });`},
+
+  saleslog:{title:'sales_log.txt',path:'data/sales_log.txt',badges:['U'],desc:'A plain-text backup log of all transactions. FileHandler.java appends a new line here after every purchase, including the timestamp, item name, price paid, and payment method. Serves as a human-readable audit trail alongside the MySQL transactions table.',code:`<span class="cm">// Example entries in sales_log.txt</span>
+2026-05-03 10:14:22 | Pepsi     | Rs.50.0  | Cash
+2026-05-03 10:31:05 | Lays      | Rs.30.0  | Card
+2026-05-03 11:02:47 | Water     | Rs.20.0  | NFC
+2026-05-03 11:45:13 | Chocolate | Rs.40.0  | Cash`},
+
+  pom:{title:'pom.xml',path:'pom.xml',badges:['U'],desc:'Maven project configuration file. Lists all Java dependencies — Spring Boot Web, Spring Data JPA, MySQL Connector, Spring Boot DevTools. Maven uses this file to download libraries and build the project.',code:`&lt;<span class="kw">dependencies</span>&gt;
+  &lt;<span class="cn">dependency</span>&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;/<span class="cn">dependency</span>&gt;
+  &lt;<span class="cn">dependency</span>&gt;
+    &lt;groupId&gt;mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+  &lt;/<span class="cn">dependency</span>&gt;
+&lt;/<span class="kw">dependencies</span>&gt;`}
+};
+
+function show(id) {
+  const f = data[id];
+  if (!f) return;
+  document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  const badgeClass = {M:'badge-m',V:'badge-v',C:'badge-c',U:'badge-u',D:'badge-d'};
+  const badges = f.badges.map(b => `<span class="badge ${badgeClass[b]||'badge-u'}">${b}</span>`).join('');
+
+  document.getElementById('detail-header').textContent = f.title;
+  document.getElementById('detail-body').innerHTML = `
+    <div class="detail-title">${f.title}</div>
+    <div class="detail-path">${f.path}</div>
+    <div style="margin-bottom:8px">${badges}</div>
+    <div class="detail-desc">${f.desc}</div>
+    <div class="detail-role">Sample code</div>
+    <div class="code-block">${f.code}</div>
+  `;
+}
+</script>
+</body>
+</html>

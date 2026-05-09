@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Vending Machine — Project Plan</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a18; padding: 28px 32px; max-width: 1100px; }
+  .section { margin-bottom: 2rem; }
+  .section-title { font-size: 11px; font-weight: 500; color: #b4b2a9; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 0.5px solid #d3d1c7; }
+  .card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 12px; padding: 1rem 1.25rem; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-teal   { background: #E1F5EE; color: #085041; }
+  .badge-coral  { background: #FAECE7; color: #712B13; }
+  .badge-blue   { background: #E6F1FB; color: #0C447C; }
+  .badge-amber  { background: #FAEEDA; color: #633806; }
+  .badge-green  { background: #EAF3DE; color: #27500A; }
+  .badge-gray   { background: #F1EFE8; color: #444441; }
+  .week-card { border-radius: 8px; border: 0.5px solid #d3d1c7; background: #fff; overflow: hidden; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s; }
+  .week-card:hover { border-color: #b4b2a9; }
+  .week-header { display: flex; align-items: center; gap: 12px; padding: 10px 14px; }
+  .week-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .week-body { padding: 0 14px 12px; font-size: 13px; color: #73726c; line-height: 1.6; display: none; }
+  .week-body.open { display: block; }
+  .week-body ul { padding-left: 1rem; }
+  .week-body li { margin-bottom: 3px; }
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .tech-item { background: #f1efe8; border-radius: 8px; padding: 10px 12px; }
+  .tech-label { font-size: 11px; color: #b4b2a9; margin-bottom: 4px; }
+  .tech-value { font-size: 13px; font-weight: 500; color: #1a1a18; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .feature-card { border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 12px; }
+  .feature-icon { font-size: 20px; margin-bottom: 6px; }
+  .feature-title { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+  .feature-desc { font-size: 12px; color: #73726c; line-height: 1.5; }
+  .oop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+  .oop-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 0.5px solid #d3d1c7; border-radius: 8px; }
+  .oop-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .oop-text { font-size: 13px; font-weight: 500; color: #1a1a18; }
+  .oop-sub { font-size: 12px; color: #73726c; margin-top: 2px; }
+  .header-block { background: #f1efe8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+  .project-name { font-size: 20px; font-weight: 500; color: #1a1a18; margin-bottom: 6px; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tab-row { display: flex; gap: 4px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab { padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 0.5px solid #d3d1c7; background: transparent; color: #73726c; transition: all 0.15s; }
+  .tab.active { background: #e6f1fb; color: #0c447c; border-color: transparent; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .api-box { border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 12px; font-family: 'SF Mono', Consolas, monospace; font-size: 12px; color: #73726c; background: #f1efe8; margin-top: 8px; line-height: 1.7; }
+  .highlight { color: #1D9E75; font-weight: 500; }
+  .highlight2 { color: #534AB7; font-weight: 500; }
+  .cv-badge { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; border: 0.5px solid #d3d1c7; font-size: 13px; color: #1a1a18; }
+  .cv-dot { width: 6px; height: 6px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
+  .arch-row { font-size: 13px; color: #73726c; padding: 5px 0; border-bottom: 0.5px solid #f1efe8; line-height: 1.6; }
+  .arch-row:last-child { border-bottom: none; }
+  code { font-family: 'SF Mono', Consolas, monospace; font-size: 11px; background: #f1efe8; padding: 1px 5px; border-radius: 4px; color: #534AB7; }
+</style>
+</head>
+<body>
+
+<div class="header-block">
+  <div class="project-name">Smart Vending Machine System</div>
+  <div style="font-size:13px;color:#73726c;">Haiqa Khalil &nbsp;·&nbsp; 2025-CYS-57 &nbsp;·&nbsp; 2nd Semester OOP Lab</div>
+  <div class="meta-row">
+    <span class="badge badge-purple">Java OOP</span>
+    <span class="badge badge-teal">Spring Boot REST</span>
+    <span class="badge badge-coral">Next.js Frontend</span>
+    <span class="badge badge-blue">MySQL Database</span>
+    <span class="badge badge-amber">MVC Architecture</span>
+    <span class="badge badge-green">4-Week Plan</span>
+  </div>
+</div>
+
+<div class="tab-row">
+  <button class="tab active" onclick="showTab('overview', this)">Overview</button>
+  <button class="tab" onclick="showTab('weeks', this)">Week-by-Week</button>
+  <button class="tab" onclick="showTab('tech', this)">Tech Stack</button>
+  <button class="tab" onclick="showTab('oop', this)">OOP Concepts</button>
+  <button class="tab" onclick="showTab('db', this)">Database</button>
+  <button class="tab" onclick="showTab('cv', this)">CV Points</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview">
+
+  <div class="section">
+    <div class="section-title">Core features</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-title">Product Catalog</div>
+        <div class="feature-desc">Browse items with name, price, category, and real-time stock count. Low-stock badge when quantity drops below 2.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <div class="feature-title">Multi-Payment</div>
+        <div class="feature-desc">Cash (with change calculation), Card (card number input), and NFC tap-to-pay — all three methods supported via polymorphism.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">Inventory Management</div>
+        <div class="feature-desc">Admin can add, edit, delete, and restock items. Every restock event is logged with timestamp and operator name.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Sales Dashboard</div>
+        <div class="feature-desc">Full transaction history with item name, amount, payment method, and date. Pulled live from the MySQL transactions table.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">Operator Login</div>
+        <div class="feature-desc">Secure admin login with hashed passwords. Only authenticated operators can access the admin dashboard and restock panel.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <div class="feature-title">Transaction Log</div>
+        <div class="feature-desc">Every purchase is saved to MySQL and also appended to sales_log.txt as a human-readable backup with timestamp.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Architecture overview</div>
+    <div class="card">
+      <div class="arch-row">🎨 <strong>Frontend:</strong> Next.js (React + TypeScript) — browser-based vending machine UI with item cards and payment modal</div>
+      <div class="arch-row">⚙️ <strong>Backend:</strong> Java Spring Boot — REST API with 5 controllers exposing <code>/api/items</code>, <code>/api/vending/buy</code>, <code>/api/transactions</code>, <code>/api/operators</code>, <code>/api/restock</code></div>
+      <div class="arch-row">🗄️ <strong>Database:</strong> MySQL via Spring Data JPA — 4 tables: items, transactions, operators, restock_log</div>
+      <div class="arch-row">📁 <strong>File handling:</strong> FileHandler.java using BufferedWriter appends every transaction to sales_log.txt</div>
+      <div class="arch-row">🔗 <strong>Frontend-Backend bridge:</strong> REST API over JSON — Next.js calls Spring Boot endpoints using fetch() in api.ts</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- WEEK BY WEEK -->
+<div class="panel" id="panel-weeks">
+  <div class="section">
+    <div class="section-title">4-week implementation timeline — click each week to expand</div>
+
+    <div class="week-card" onclick="toggleWeek(this)">
+      <div class="week-header">
+        <div class="week-num" style="background:#EEEDFE;color:#3C3489;">1</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Week 1 — Setup &amp; Folder Structure</div>
+          <div style="font-size:12px;color:#b4b2a9;">Spring Boot project, GitHub, MVC packages, Git workflow</div>
+        </div>
+      </div>
+      <div class="week-body">
+        <ul>
+          <li><strong>Day 1–2:</strong> Create Spring Boot project in IntelliJ with Maven. Set up package structure: <code>models/</code>, <code>controllers/</code>, <code>views/</code>, <code>utils/</code>, <code>config/</code></li>
+          <li><strong>Day 3:</strong> Initialize GitHub repository. Push initial folder structure. Add instructor as collaborator.</li>
+          <li><strong>Day 4:</strong> Create empty placeholder classes — Item.java, VendingMachine.java, PaymentMethod.java, VendingController.java, FileHandler.java</li>
+          <li><strong>Day 5:</strong> Write README.md with project description, tech stack, and team info</li>
+          <li><strong>Day 6–7:</strong> Set up MySQL locally. Create database <code>vendingdb</code>. Write schema.sql with all 4 tables. Configure application.properties</li>
+        </ul>
+        <div style="margin-top:10px;padding:8px 10px;background:#E1F5EE;border-radius:6px;font-size:12px;color:#085041;">✅ Deliverable: GitHub repo live, folder structure pushed, MySQL connected, application runs without errors</div>
+      </div>
+    </div>
+
+    <div class="week-card" onclick="toggleWeek(this)">
+      <div class="week-header">
+        <div class="week-num" style="background:#FAECE7;color:#712B13;">2</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Week 2 — Core Java Classes (OOP)</div>
+          <div style="font-size:12px;color:#b4b2a9;">Models, payment interface, controller logic, file logging</div>
+        </div>
+      </div>
+      <div class="week-body">
+        <ul>
+          <li><strong>Day 8–9:</strong> Write Item.java — private fields, getters/setters, @Entity annotation, toString(). Write VendingMachine.java — ArrayList inventory, addItem(), showInventory(), low-stock alert</li>
+          <li><strong>Day 10:</strong> Write PaymentMethod.java interface. Implement CashPayment.java (change calculation), CardPayment.java, NFCPayment.java — all three implement the interface (polymorphism)</li>
+          <li><strong>Day 11–12:</strong> Write VendingController.java — buyItem() method validates stock, calls payment.pay(), updates quantity, logs transaction</li>
+          <li><strong>Day 13:</strong> Write FileHandler.java — BufferedWriter logs every purchase to sales_log.txt with timestamp</li>
+          <li><strong>Day 14:</strong> Write Transaction.java, Operator.java, RestockLog.java entity classes. Push all to GitHub.</li>
+        </ul>
+        <div style="margin-top:10px;padding:8px 10px;background:#E1F5EE;border-radius:6px;font-size:12px;color:#085041;">✅ Deliverable: All Java model classes working, payment flow tested via ConsoleView, file log being written</div>
+      </div>
+    </div>
+
+    <div class="week-card" onclick="toggleWeek(this)">
+      <div class="week-header">
+        <div class="week-num" style="background:#E6F1FB;color:#0C447C;">3</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Week 3 — REST API + MySQL + Next.js Frontend</div>
+          <div style="font-size:12px;color:#b4b2a9;">Spring Boot controllers, database operations, Next.js UI</div>
+        </div>
+      </div>
+      <div class="week-body">
+        <ul>
+          <li><strong>Day 15–16:</strong> Add @RestController to all controllers. Write ItemController.java — GET /api/items, POST /api/items, DELETE /api/items/{id}. Test with Postman.</li>
+          <li><strong>Day 17:</strong> Write TransactionController.java — GET /api/transactions, POST /api/transactions. Write RestockController.java — POST /api/restock, GET /api/restock/logs</li>
+          <li><strong>Day 18:</strong> Write OperatorController.java — POST /api/operators/login with password hashing. Add CorsConfig.java to allow Next.js requests.</li>
+          <li><strong>Day 19–20:</strong> Set up Next.js frontend. Write api.ts with all fetch() calls. Build ItemCard.tsx and PaymentModal.tsx components. Connect to Spring Boot API.</li>
+          <li><strong>Day 21:</strong> Build AdminDashboard.tsx and RestockPanel.tsx. Test full flow: browse → buy → payment → log. Push everything to GitHub.</li>
+        </ul>
+        <div style="margin-top:10px;padding:8px 10px;background:#E1F5EE;border-radius:6px;font-size:12px;color:#085041;">✅ Deliverable: REST API working, items displayed in browser, purchase flow saves to MySQL and file log</div>
+      </div>
+    </div>
+
+    <div class="week-card" onclick="toggleWeek(this)">
+      <div class="week-header">
+        <div class="week-num" style="background:#EAF3DE;color:#27500A;">4</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;">Week 4 — Polish, Testing &amp; Presentation</div>
+          <div style="font-size:12px;color:#b4b2a9;">UI polish, error handling, documentation, demo prep</div>
+        </div>
+      </div>
+      <div class="week-body">
+        <ul>
+          <li><strong>Day 22–23:</strong> Polish Next.js UI — consistent colors, responsive layout, Vend-O-Buddy branding, loading states</li>
+          <li><strong>Day 24:</strong> Error handling — try-catch in all controllers, show friendly error messages in frontend for out-of-stock and failed payments</li>
+          <li><strong>Day 25:</strong> Write Javadoc comments on all Java classes. Create UML class diagram (draw.io) showing inheritance and polymorphism</li>
+          <li><strong>Day 26:</strong> Test complete flow end-to-end — browse, buy with all 3 payment types, admin restock, sales log check</li>
+          <li><strong>Day 27–28:</strong> Update README.md with setup instructions, screenshots, and how to run locally. Final GitHub commit cleanup.</li>
+          <li><strong>Day 29–30:</strong> Prepare demo — start with inventory view, do a purchase, show the sales log update, show admin restock panel</li>
+        </ul>
+        <div style="margin-top:10px;padding:8px 10px;background:#E1F5EE;border-radius:6px;font-size:12px;color:#085041;">✅ Deliverable: Polished web app + UML diagram + GitHub repo with clean commit history + demo-ready</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TECH STACK -->
+<div class="panel" id="panel-tech">
+  <div class="section">
+    <div class="section-title">Full technology stack</div>
+    <div class="tech-grid">
+      <div class="tech-item"><div class="tech-label">Language</div><div class="tech-value">Java 17+</div></div>
+      <div class="tech-item"><div class="tech-label">Backend Framework</div><div class="tech-value">Spring Boot 3</div></div>
+      <div class="tech-item"><div class="tech-label">Frontend</div><div class="tech-value">Next.js 15</div></div>
+      <div class="tech-item"><div class="tech-label">Styling</div><div class="tech-value">Tailwind CSS</div></div>
+      <div class="tech-item"><div class="tech-label">Database</div><div class="tech-value">MySQL 8</div></div>
+      <div class="tech-item"><div class="tech-label">ORM</div><div class="tech-value">Spring Data JPA</div></div>
+      <div class="tech-item"><div class="tech-label">API Type</div><div class="tech-value">REST (JSON)</div></div>
+      <div class="tech-item"><div class="tech-label">Build Tool</div><div class="tech-value">Maven</div></div>
+      <div class="tech-item"><div class="tech-label">IDE</div><div class="tech-value">IntelliJ IDEA</div></div>
+      <div class="tech-item"><div class="tech-label">Version Control</div><div class="tech-value">Git + GitHub</div></div>
+      <div class="tech-item"><div class="tech-label">File Storage</div><div class="tech-value">BufferedWriter (.txt)</div></div>
+      <div class="tech-item"><div class="tech-label">Architecture</div><div class="tech-value">MVC Pattern</div></div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:1.5rem;">
+    <div class="section-title">Why Spring Boot + Next.js?</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:6px;">Spring Boot ✅ (Recommended)</div>
+        <div style="font-size:12px;color:#73726c;line-height:1.6;">Industry-standard Java backend. Your OOP classes plug in directly as @Entity and @RestController. MVC is built-in. Instructor already saw a student use it and was impressed.</div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:6px;">Next.js ✅ (Recommended)</div>
+        <div style="font-size:12px;color:#73726c;line-height:1.6;">Modern React framework. Runs in the browser so the project looks like a real web app. Connects to Spring Boot via REST API calls. Beginner-friendly with good documentation.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OOP CONCEPTS -->
+<div class="panel" id="panel-oop">
+  <div class="section">
+    <div class="section-title">OOP concepts demonstrated — each one mapped to your project</div>
+    <div class="oop-grid">
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#534AB7;"></div>
+        <div>
+          <div class="oop-text">Encapsulation</div>
+          <div class="oop-sub">All fields in Item.java, Operator.java, Transaction.java are private. Public getters/setters control access.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#1D9E75;"></div>
+        <div>
+          <div class="oop-text">Abstraction</div>
+          <div class="oop-sub">PaymentMethod is an interface — it defines what payment must do without exposing how each type works.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#D85A30;"></div>
+        <div>
+          <div class="oop-text">Polymorphism</div>
+          <div class="oop-sub">VendingController calls payment.pay() — works identically for Cash, Card, and NFC without if-else chains.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#378ADD;"></div>
+        <div>
+          <div class="oop-text">Inheritance</div>
+          <div class="oop-sub">CashPayment, CardPayment, and NFCPayment all inherit the PaymentMethod contract via implements.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#BA7517;"></div>
+        <div>
+          <div class="oop-text">Collections</div>
+          <div class="oop-sub">VendingMachine uses ArrayList&lt;Item&gt; for inventory. Spring Boot returns List&lt;Transaction&gt; from the database.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#D4537E;"></div>
+        <div>
+          <div class="oop-text">Exception Handling</div>
+          <div class="oop-sub">try-catch blocks in FileHandler.java (file I/O), DatabaseHelper.java (JDBC), and all REST controllers.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#639922;"></div>
+        <div>
+          <div class="oop-text">File I/O</div>
+          <div class="oop-sub">FileHandler.java uses BufferedWriter to append transactions to sales_log.txt. Demonstrates Java file handling.</div>
+        </div>
+      </div>
+      <div class="oop-item">
+        <div class="oop-dot" style="background:#888780;"></div>
+        <div>
+          <div class="oop-text">Interfaces</div>
+          <div class="oop-sub">PaymentMethod interface enforces pay() and getPaymentType() on every payment class — design by contract.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DATABASE -->
+<div class="panel" id="panel-db">
+  <div class="section">
+    <div class="section-title">MySQL database — 4 tables</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:8px;">🛒 items</div>
+        <div class="api-box">id &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INT &nbsp;&nbsp; AUTO_INCREMENT PK<br>name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VARCHAR(100)<br>price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DECIMAL(10,2)<br>quantity &nbsp;&nbsp; INT<br>category &nbsp;&nbsp; VARCHAR(50)</div>
+        <div style="font-size:12px;color:#73726c;margin-top:8px;">All product data. ItemController reads and writes this table. Stock is updated after every purchase.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:8px;">💳 transactions</div>
+        <div class="api-box">id &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INT &nbsp;&nbsp; AUTO_INCREMENT PK<br>item_name &nbsp;&nbsp;&nbsp;&nbsp; VARCHAR(100)<br>amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DECIMAL(10,2)<br>payment_type &nbsp; VARCHAR(20)<br>purchased_at &nbsp; DATETIME</div>
+        <div style="font-size:12px;color:#73726c;margin-top:8px;">Every purchase is recorded here. Admin dashboard fetches all rows to display sales history.</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:8px;">🔐 operators</div>
+        <div class="api-box">id &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INT &nbsp;&nbsp; AUTO_INCREMENT PK<br>name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VARCHAR(100)<br>username &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VARCHAR(50)<br>password_hash &nbsp;VARCHAR(255)<br>role &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VARCHAR(20)</div>
+        <div style="font-size:12px;color:#73726c;margin-top:8px;">Admin/staff accounts. Passwords are hashed before storage. Role is "ADMIN" or "STAFF".</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:8px;">📦 restock_log</div>
+        <div class="api-box">id &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INT &nbsp;&nbsp; AUTO_INCREMENT PK<br>item_id &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INT &nbsp;&nbsp; FK → items<br>operator_id &nbsp;&nbsp;&nbsp; INT &nbsp;&nbsp; FK → operators<br>quantity_added &nbsp;INT<br>restocked_at &nbsp;&nbsp; DATETIME</div>
+        <div style="font-size:12px;color:#73726c;margin-top:8px;">Audit log for every restock. Tracks who added stock, how much, and when.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:1.5rem;">
+    <div class="section-title">REST API endpoints</div>
+    <div class="card">
+      <div class="api-box">
+        <span class="highlight">GET</span>  /api/items &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ fetch all products for the vending UI<br>
+        <span class="highlight">POST</span> /api/items &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ admin adds a new item<br>
+        <span class="highlight">DELETE</span> /api/items/{id} &nbsp;&nbsp;&nbsp;&nbsp;→ admin deletes an item<br>
+        <span class="highlight">POST</span> /api/vending/buy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ customer buys an item (payment + stock update)<br>
+        <span class="highlight">GET</span>  /api/transactions &nbsp;&nbsp;&nbsp;&nbsp;→ admin fetches all sales history<br>
+        <span class="highlight">POST</span> /api/operators/login &nbsp;→ admin login with credentials<br>
+        <span class="highlight">POST</span> /api/restock &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ operator restocks an item<br>
+        <span class="highlight">GET</span>  /api/restock/logs &nbsp;&nbsp;&nbsp;&nbsp;→ admin views all restock history
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CV POINTS -->
+<div class="panel" id="panel-cv">
+  <div class="section">
+    <div class="section-title">Project entry for your resume / LinkedIn</div>
+    <div class="card" style="font-size:13px;line-height:1.8;color:#73726c;font-style:italic;">
+      "Smart Vending Machine System &nbsp;·&nbsp; Java + Spring Boot + Next.js &nbsp;·&nbsp; 2026<br>
+      Built a full-stack web-based vending machine system using Java OOP principles and MVC architecture. Developed a Spring Boot REST API with 5 controllers, integrated MySQL database with 4 relational tables (items, transactions, operators, restock_log), and built a Next.js frontend with real-time inventory display, multi-payment support (Cash, Card, NFC), and an admin dashboard. Demonstrates: Encapsulation, Abstraction, Polymorphism, Inheritance, File I/O, Exception Handling, REST API design."
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:1.5rem;">
+    <div class="section-title">How to write this on your CV</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="cv-badge"><div class="cv-dot"></div>Shows full-stack development — Java backend + modern React frontend (rare for 2nd semester)</div>
+      <div class="cv-badge"><div class="cv-dot"></div>Spring Boot is an industry-standard framework — interviewers recognize it immediately</div>
+      <div class="cv-badge"><div class="cv-dot"></div>REST API design demonstrates real software engineering beyond basic OOP</div>
+      <div class="cv-badge"><div class="cv-dot"></div>MySQL with 4 relational tables shows database design skills with foreign keys</div>
+      <div class="cv-badge"><div class="cv-dot"></div>GitHub with regular commits proves a real development process, not last-minute work</div>
+      <div class="cv-badge"><div class="cv-dot"></div>MVC architecture shows awareness of software design patterns</div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:1.5rem;">
+    <div class="section-title">Quick tips for maximum marks in lab</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="cv-badge"><div class="cv-dot" style="background:#D85A30;"></div>⭐ Open the browser and show items loading live from MySQL — instant wow factor</div>
+      <div class="cv-badge"><div class="cv-dot" style="background:#D85A30;"></div>⭐ Do a purchase with all 3 payment types — show the log updating in real time</div>
+      <div class="cv-badge"><div class="cv-dot" style="background:#D85A30;"></div>⭐ Open the admin dashboard — show the sales history table with live data</div>
+      <div class="cv-badge"><div class="cv-dot" style="background:#D85A30;"></div>⭐ Show the UML class diagram and verbally name each OOP concept</div>
+      <div class="cv-badge"><div class="cv-dot" style="background:#D85A30;"></div>⭐ Open GitHub and show the commit history — prove consistent daily work</div>
+      <div class="cv-badge"><div class="cv-dot" style="background:#D85A30;"></div>⭐ Keep all code in separate well-named .java files — no spaghetti code</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+function toggleWeek(card) {
+  const body = card.querySelector('.week-body');
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>
