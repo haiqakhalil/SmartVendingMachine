@@ -1,4 +1,6 @@
 package com.vendingmachine.models;
 
-public class PaymentMethod {
+public interface PaymentMethod {
+    boolean pay(double amount);
+    String getPaymentType();
 }
