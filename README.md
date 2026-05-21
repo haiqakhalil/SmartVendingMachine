@@ -6,10 +6,9 @@ A full-stack web-based Smart Vending Machine application built with **Java Sprin
 
 ## 👩‍💻 Author
 
-**Haiqa Khalil** — 2025-CYS-57  
-OOP Lab — Spring 2025  
+**Haiqa Khalil**
+OOP Lab
 University of Engineering and Technology, Lahore  
-Instructor: Sir Shahmeer Nawaz
 
 ---
 
@@ -17,18 +16,31 @@ Instructor: Sir Shahmeer Nawaz
 
 SmartVendingMachine/
 ├── backend/               # Java Spring Boot (MVC)
+
 │   └── src/main/java/com/vendingmachine/
+
 │       ├── models/        # OOP Entity classes
+
 │       ├── controllers/   # REST API endpoints
+
 │       ├── views/         # Console view (testing)
+
 │       ├── utils/         # FileHandler, helpers
+
 │       └── config/        # CORS configuration
+
 ├── frontend/              # Next.js UI
+
 │   ├── app/               # Pages
+
 │   └── components/        # UI components
+
 ├── database/              # MySQL schema
+
 │   └── schema.sql
+
 ├── docs/                  # Documentation
+
 └── README.md
 
 ---
