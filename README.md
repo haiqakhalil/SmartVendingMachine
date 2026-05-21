@@ -1,37 +1,20 @@
-# 🏪 Smart Vending Machine System
+# 🏧 Smart Vending Machine System
 
-A console-based Vending Machine application built with Java Spring Boot and MySQL.
+A web-based Vending Machine application built with Java Spring Boot, Next.js, and MySQL.
 
 ## 🛠 Tech Stack
-- Java 25
-- Spring Boot 4.0.6
-- Spring MVC
-- MySQL 8.x
+- Java 17+
+- Spring Boot 3.3.5
+- Next.js 15 (Frontend)
+- MySQL 8
 - Maven
 - GitHub
 
-## 👥 Team
-| Name | Role |
-|------|------|
-| JK   | Developer |
-
 ## 📁 Project Structure
-src/main/java/com/vendingmachine/
-├── controllers/
-├── models/
-├── views/
-├── utils/
-└── config/
+- `backend/` → Java Spring Boot (MVC)
+- `frontend/` → Next.js UI
+- `database/` → MySQL schema
+- `docs/` → Documentation
 
-## ⚙️ Setup Instructions
-1. Clone the repo
-2. Create MySQL database: CREATE DATABASE vendingdb;
-3. Update application.properties with your DB credentials
-4. Run: mvn spring-boot:run
-5. Open: http://localhost:8080
-
-## ✅ Deliverable
-- GitHub repo live
-- Folder structure pushed
-- MySQL connected
-- Application runs without errors
+## 👩‍💻 Author
+Haiqa Khalil — 2025-CYS-57
