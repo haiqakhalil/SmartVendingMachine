@@ -14,47 +14,10 @@ public class Item {
     private int quantity;
     private String category;
 
-    public Item() {}
 
-    public String getCategory() {
-        return category;
+    public Item() {
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public Item(String name, double price, int quantity, String category) {
         this.name = name;
@@ -64,9 +27,48 @@ public class Item {
     }
 
 
-    @Override
-    public String toString() {
-        return "Item{id=" + id + ", name='" + name + "', price=" + price +
-                ", quantity=" + quantity + ", category='" + category + "'}";
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void showInfo() {
+        System.out.println(name + " | Price: Rs." + price + " | Stock: " + quantity);
     }
 }

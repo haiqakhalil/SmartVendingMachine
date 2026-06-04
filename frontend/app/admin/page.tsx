@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getItems, buyItem } from "../../lib/api";
+import { getItems, buyItem } from "../lib/api";
 
 export default function Home() {
   const [items, setItems] = useState<any[]>([]);
