@@ -11,29 +11,41 @@ public class RestockLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private Item item;
-
-    @ManyToOne
-    @JoinColumn(name = "operator_id")
-    private Operator operator;
-
+    private int itemId;
+    private String itemName;
     private int quantityAdded;
     private LocalDateTime restockedAt;
 
-    public RestockLog() {}
 
-    public RestockLog(Item item, Operator operator, int quantityAdded) {
-        this.item = item;
-        this.operator = operator;
+    public RestockLog() {
+    }
+
+
+    public RestockLog(int itemId, String itemName, int quantityAdded) {
+        this.itemId = itemId;
+        this.itemName = itemName;
         this.quantityAdded = quantityAdded;
         this.restockedAt = LocalDateTime.now();
     }
 
-    public int getId() { return id; }
-    public Item getItem() { return item; }
-    public Operator getOperator() { return operator; }
-    public int getQuantityAdded() { return quantityAdded; }
-    public LocalDateTime getRestockedAt() { return restockedAt; }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public int getQuantityAdded() {
+        return quantityAdded;
+    }
+
+    public LocalDateTime getRestockedAt() {
+        return restockedAt;
+    }
 }
