@@ -7,7 +7,7 @@ public class VendingMachine {
     private String machineName;
     private ArrayList<Item> itemList;
 
-    
+
     public VendingMachine(String machineName) {
         this.machineName = machineName;
         this.itemList = new ArrayList<Item>();
