@@ -17,21 +17,31 @@ public class RestockController {
     @Autowired
     private RestockLogRepository restockLogRepository;
 
+    // Restock item
     @PostMapping
     public String restock(@RequestBody RestockRequest request) {
-        Optional<Item> optionalItem = itemRepository.findById(request.getItemId());
 
-        if (optionalItem.isEmpty()) {
+        Optional<Item> result = itemRepository.findById(request.getItemId());
+
+        if (result.isEmpty()) {
             return "Item not found!";
         }
 
-        Item item = optionalItem.get();
-        item.setQuantity(item.getQuantity() + request.getQuantityAdded());
+        Item item = result.get();
+
+        // Add quantity
+        int newQty = item.getQuantity() + request.getQuantityAdded();
+        item.setQuantity(newQty);
         itemRepository.save(item);
 
-        return "Restocked! New quantity: " + item.getQuantity();
+        // Save log
+        RestockLog log = new RestockLog(item.getId(), item.getName(), request.getQuantityAdded());
+        restockLogRepository.save(log);
+
+        return "Restocked! New quantity: " + newQty;
     }
 
+    // Get restock logs
     @GetMapping("/logs")
     public List<RestockLog> getLogs() {
         return restockLogRepository.findAll();
