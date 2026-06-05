@@ -5,39 +5,36 @@ import java.util.Scanner;
 
 public class ConsoleView {
 
-    private Scanner scanner = new Scanner(System.in);
+    Scanner scanner = new Scanner(System.in);
 
     public void start() {
-        System.out.println("============================");
-        System.out.println("  Welcome to Vend-O-Buddy!  ");
-        System.out.println("============================");
+
+        System.out.println("Welcome to Vend-O-Buddy!");
+        System.out.println("========================");
 
         boolean running = true;
+
         while (running) {
-            System.out.println("\n1. Show Items");
-            System.out.println("2. Buy Item");
-            System.out.println("3. Show Sales Log");
-            System.out.println("4. Exit");
-            System.out.print("Choose: ");
+
+            System.out.println("\n1. Open store in browser");
+            System.out.println("2. Show sales log");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
 
             int choice = scanner.nextInt();
 
-            switch (choice) {
-                case 1:
-                    System.out.println("Open browser: http://localhost:3000");
-                    break;
-                case 2:
-                    System.out.println("Open browser: http://localhost:3000");
-                    break;
-                case 3:
-                    FileHandler.showLogs();
-                    break;
-                case 4:
-                    System.out.println("Goodbye!");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid option!");
+            if (choice == 1) {
+                System.out.println("Open this link: http://localhost:3000");
+
+            } else if (choice == 2) {
+                FileHandler.showLogs();
+
+            } else if (choice == 3) {
+                System.out.println("Goodbye!");
+                running = false;
+
+            } else {
+                System.out.println("Wrong choice! Try again.");
             }
         }
     }
