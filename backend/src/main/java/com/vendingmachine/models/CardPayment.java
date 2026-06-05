@@ -1,6 +1,7 @@
 package com.vendingmachine.models;
 
 public class CardPayment implements PaymentMethod {
+
     private String cardNumber;
 
     public CardPayment(String cardNumber) {
@@ -14,5 +15,7 @@ public class CardPayment implements PaymentMethod {
     }
 
     @Override
-    public String getPaymentType() { return "Card"; }
+    public String getPaymentType() {
+        return "Card";
+    }
 }
