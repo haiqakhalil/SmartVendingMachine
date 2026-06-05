@@ -4,10 +4,12 @@ public class NFCPayment implements PaymentMethod {
 
     @Override
     public boolean pay(double amount) {
-        System.out.println("NFC tap payment of Rs." + amount + " successful!");
+        System.out.println("NFC payment of Rs." + amount + " done!");
         return true;
     }
 
     @Override
-    public String getPaymentType() { return "NFC"; }
+    public String getPaymentType() {
+        return "NFC";
+    }
 }
