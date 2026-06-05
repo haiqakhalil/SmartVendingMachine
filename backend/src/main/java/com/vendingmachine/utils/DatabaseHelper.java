@@ -4,27 +4,32 @@ import java.sql.*;
 
 public class DatabaseHelper {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/vendingdb";
-    private static final String USER = "root";
-    private static final String PASSWORD = "yourpassword";
+    static String url = "jdbc:mysql://localhost:3306/vendingdb";
+    static String user = "root";
+    static String password = "yourpassword";
 
-    private static Connection connection;
+    static Connection connection = null;
 
+    // Connect to database
     public static Connection getConnection() {
+
         try {
-            if (connection == null || connection.isClosed()) {
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("Database connected!");
+            if (connection == null) {
+                connection = DriverManager.getConnection(url, user, password);
+                System.out.println("Connected to database!");
             }
         } catch (SQLException e) {
             System.out.println("Connection error: " + e.getMessage());
         }
+
         return connection;
     }
 
+    // Close connection
     public static void closeConnection() {
+
         try {
-            if (connection != null && !connection.isClosed()) {
+            if (connection != null) {
                 connection.close();
                 System.out.println("Connection closed!");
             }
