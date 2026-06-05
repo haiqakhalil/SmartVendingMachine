@@ -7,39 +7,50 @@ import java.time.format.DateTimeFormatter;
 
 public class FileHandler {
 
-    private static final String LOG_FILE = "sales_log.txt";
+    // File name for saving logs
+    static String logFile = "sales_log.txt";
 
+    // Save one transaction to file
     public static void logTransaction(Item item, String paymentType) {
+
         try {
-            FileWriter fw = new FileWriter(LOG_FILE, true);
+            FileWriter fw = new FileWriter(logFile, true);
             BufferedWriter bw = new BufferedWriter(fw);
 
-            String timestamp = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            String time = LocalDateTime.now().format(
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            );
 
-            bw.write(timestamp + " | " + item.getName() +
-                    " | Rs." + item.getPrice() +
-                    " | " + paymentType);
+            String line = time + " | " + item.getName() + " | Rs." + item.getPrice() + " | " + paymentType;
+
+            bw.write(line);
             bw.newLine();
             bw.close();
 
-            System.out.println("Transaction logged!");
+            System.out.println("Saved to file!");
+
         } catch (IOException e) {
-            System.out.println("Log error: " + e.getMessage());
+            System.out.println("Error saving to file: " + e.getMessage());
         }
     }
 
+    // Read and show all logs
     public static void showLogs() {
+
         try {
-            BufferedReader br = new BufferedReader(new FileReader(LOG_FILE));
+            BufferedReader br = new BufferedReader(new FileReader(logFile));
             String line;
-            System.out.println("\n--- Sales Log ---");
+
+            System.out.println("--- Sales Log ---");
+
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
             }
+
             br.close();
+
         } catch (IOException e) {
-            System.out.println("No logs found!");
+            System.out.println("No logs found yet.");
         }
     }
 }
