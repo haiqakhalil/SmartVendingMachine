@@ -14,6 +14,7 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
+
     @GetMapping
     public List<Item> getAllItems() {
         return itemRepository.findAll();
@@ -24,15 +25,16 @@ public class ItemController {
         return itemRepository.save(item);
     }
 
+    @PutMapping("/{id}")
+    public Item updateItem(@PathVariable int id, @RequestBody Item item) {
+        item.setId(id);
+        return itemRepository.save(item);
+    }
+
+
     @DeleteMapping("/{id}")
     public String deleteItem(@PathVariable int id) {
         itemRepository.deleteById(id);
         return "Item deleted!";
-    }
-
-    @PutMapping("/{id}")
-    public Item updateItem(@PathVariable int id, @RequestBody Item updatedItem) {
-        updatedItem.setId(id);
-        return itemRepository.save(updatedItem);
     }
 }
