@@ -5,42 +5,41 @@ import java.util.ArrayList;
 public class VendingMachine {
 
     private String machineName;
-    private ArrayList<Item> inventory;
+    private ArrayList<Item> itemList;
 
+    
     public VendingMachine(String machineName) {
         this.machineName = machineName;
-        this.inventory = new ArrayList<>();
+        this.itemList = new ArrayList<Item>();
     }
+
 
     public void addItem(Item item) {
-        inventory.add(item);
-        System.out.println(item.getName() + " added to machine.");
+        itemList.add(item);
+        System.out.println(item.getName() + " added to " + machineName);
     }
 
-    public void showInventory() {
-        System.out.println("\n--- " + machineName + " Inventory ---");
-        if (inventory.isEmpty()) {
-            System.out.println("Machine is empty!");
-        } else {
-            for (int i = 0; i < inventory.size(); i++) {
-                System.out.println((i + 1) + ". " + inventory.get(i));
-            }
+
+    public void showAllItems() {
+        System.out.println("Items in " + machineName + ":");
+        for (int i = 0; i < itemList.size(); i++) {
+            System.out.println((i + 1) + ". " + itemList.get(i).getName());
         }
     }
 
     public Item getItem(int index) {
-        if (index >= 0 && index < inventory.size()) {
-            return inventory.get(index);
+        if (index >= 0 && index < itemList.size()) {
+            return itemList.get(index);
         }
         return null;
     }
 
-    public boolean isLowStock(Item item) {
-        return item.getQuantity() < 2;
-    }
 
-    public ArrayList<Item> getInventory() {
-        return inventory;
+    public boolean isLowStock(Item item) {
+        if (item.getQuantity() < 2) {
+            return true;
+        }
+        return false;
     }
 
     public String getMachineName() {
