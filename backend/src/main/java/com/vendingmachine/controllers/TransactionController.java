@@ -14,8 +14,9 @@ public class TransactionController {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    // Get all transactions
     @GetMapping
-    public List<Transaction> getAllTransactions() {
+    public List<Transaction> getAll() {
         return transactionRepository.findAll();
     }
 }
