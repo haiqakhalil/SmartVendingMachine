@@ -17,36 +17,40 @@ public class VendingController {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    // Buy item
     @PostMapping("/buy")
     public String buyItem(@RequestBody BuyRequest request) {
-        Optional<Item> optionalItem = itemRepository.findById(request.getItemId());
 
-        if (optionalItem.isEmpty()) {
+        // Find item
+        Optional<Item> result = itemRepository.findById(request.getItemId());
+
+        if (result.isEmpty()) {
             return "Item not found!";
         }
 
-        Item item = optionalItem.get();
+        Item item = result.get();
 
-        if (item.getQuantity() <= 0) {
-            return "Out of stock!";
+        // Check stock
+        if (item.getQuantity() == 0) {
+            return "Item is out of stock!";
         }
 
+        // Low stock warning
         if (item.getQuantity() < 2) {
-            System.out.println("WARNING: Low stock on " + item.getName());
+            System.out.println("Warning: Low stock for " + item.getName());
         }
 
+        // Reduce quantity
         item.setQuantity(item.getQuantity() - 1);
         itemRepository.save(item);
 
-        Transaction transaction = new Transaction(
-                item.getName(),
-                item.getPrice(),
-                request.getPaymentType()
-        );
-        transactionRepository.save(transaction);
+        // Save to database
+        Transaction t = new Transaction(item.getName(), item.getPrice(), request.getPaymentType());
+        transactionRepository.save(t);
 
+        // Save to file
         FileHandler.logTransaction(item, request.getPaymentType());
 
-        return "Purchase successful! Dispensing: " + item.getName();
+        return "Purchase successful! Enjoy your " + item.getName() + "!";
     }
 }
