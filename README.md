@@ -1,56 +1,39 @@
 # 🏧 Smart Vending Machine System
-
-A full-stack web-based Smart Vending Machine application built with **Java Spring Boot** (Backend) + **Next.js** (Frontend) and **MySQL** database, following strict **MVC Architecture**.
+A full-stack web-based Smart Vending Machine application built with **Java Spring Boot** (Backend) + **HTML/CSS/JavaScript** (Frontend) and **MySQL** database, following strict **MVC Architecture**.
 
 ---
 
 ## 👩‍💻 Author
-
 **Haiqa Khalil**
 OOP Lab
-University of Engineering and Technology, Lahore  
+University of Engineering and Technology, Lahore
 
 ---
 
 ## 📁 Project Structure
-
+```
 SmartVendingMachine/
 ├── backend/               # Java Spring Boot (MVC)
-
 │   └── src/main/java/com/vendingmachine/
-
 │       ├── models/        # OOP Entity classes
-
 │       ├── controllers/   # REST API endpoints
-
 │       ├── views/         # Console view (testing)
-
 │       ├── utils/         # FileHandler, helpers
-
 │       └── config/        # CORS configuration
-
-├── frontend/              # Next.js UI
-
-│   ├── app/               # Pages
-
-│   └── components/        # UI components
-
+│   └── index.html         # Main frontend file
 ├── database/              # MySQL schema
-
 │   └── schema.sql
-
 ├── docs/                  # Documentation
-
 └── README.md
+```
 
 ---
 
 ## 🛠 Tech Stack
-
 | Layer | Technology |
 |---|---|
 | Backend | Java 17 + Spring Boot 3.3.5 |
-| Frontend | Next.js 15 + Tailwind CSS |
+| Frontend | HTML + CSS + JavaScript |
 | Database | MySQL 8 |
 | ORM | Spring Data JPA |
 | API | REST (JSON) |
@@ -60,7 +43,6 @@ SmartVendingMachine/
 ---
 
 ## ✨ Features
-
 - 🛒 Product catalog with real-time stock display
 - 💳 Multi-payment support: Cash, Card, and NFC
 - 📦 Admin inventory management (add, edit, delete items)
@@ -72,8 +54,17 @@ SmartVendingMachine/
 
 ---
 
-## 🗄 Database — 4 Tables
+## 🌐 How Frontend Works
+The frontend is a single **`index.html`** file served directly by Spring Boot at `http://localhost:8080`.
 
+- No separate framework needed
+- Pure HTML, CSS, and JavaScript
+- Calls backend REST API using `fetch()`
+- Runs in browser at: `http://localhost:8080`
+
+---
+
+## 🗄 Database — 4 Tables
 | Table | Purpose |
 |---|---|
 | `items` | Product catalog |
@@ -84,7 +75,6 @@ SmartVendingMachine/
 ---
 
 ## 🔗 REST API Endpoints
-
 | Method | Endpoint | Purpose |
 |---|---|---|
 | GET | `/api/items` | Fetch all items |
@@ -99,11 +89,9 @@ SmartVendingMachine/
 ---
 
 ## ⚙️ Prerequisites
-
 - Java 17+
 - Maven 3.9+
 - MySQL 8
-- Node.js 18+
 - IntelliJ IDEA
 
 ---
@@ -111,34 +99,33 @@ SmartVendingMachine/
 ## 🚀 Setup & Run
 
 ### Step 1: Clone the Repository
-
+```
 git clone https://github.com/haiqakhalil/SmartVendingMachine.git
 cd SmartVendingMachine
+```
 
 ### Step 2: Setup MySQL Database
-
 Open MySQL and run:
+```
 source database/schema.sql
+```
 
 ### Step 3: Backend Setup
-
+```
 cd backend
 mvn install
 mvn spring-boot:run
-Backend runs at: `http://localhost:8080`
+```
 
-### Step 4: Frontend Setup
-
-cd frontend
-npm install
-npm run dev
-
-Frontend runs at: `http://localhost:3000`
+### Step 4: Open in Browser
+```
+http://localhost:8080
+```
+Frontend (index.html) is served automatically by Spring Boot — no extra setup needed!
 
 ---
 
 ## 🧠 OOP Concepts Demonstrated
-
 | Concept | Where Used |
 |---|---|
 | Encapsulation | `Item.java` — private fields + getters/setters |
@@ -152,11 +139,10 @@ Frontend runs at: `http://localhost:3000`
 ---
 
 ## 🔧 Troubleshooting
-
 | Issue | Solution |
 |---|---|
 | MySQL connection error | Check `application.properties` credentials |
-| CORS error | Ensure `CorsConfig.java` allows `localhost:3000` |
+| CORS error | Ensure `CorsConfig.java` allows `localhost:8080` |
 | Port in use | Change `server.port` in `application.properties` |
 | Maven build fail | Run `mvn clean install` |
-   
+```
