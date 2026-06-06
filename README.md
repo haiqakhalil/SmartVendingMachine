@@ -176,8 +176,4 @@ Frontend (index.html) is served automatically by Spring Boot — no extra setup 
 | CORS error | Verify `CorsConfig.java` allows `localhost:8080` |
 | Build fails | Run `mvn clean install` in backend folder |
 | Port in use | Change `server.port` in `application.properties` |
-
 ---
-- Step 5 (npm) hata diya ✅
-- CORS `localhost:3000` → `localhost:8080` ✅
-- "200+ Products" hata diya (tumhare paas itne nahi hain) ✅
