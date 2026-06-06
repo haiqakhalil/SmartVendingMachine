@@ -1,6 +1,6 @@
 # 🏧 Smart Vending Machine System
 
-A full-stack web-based Smart Vending Machine built with **Java Spring Boot** + **Next.js** + **MySQL**, strictly following **MVC Architecture** and **OOP principles**.
+A web-based Smart Vending Machine built with **Java Spring Boot** + **HTML/CSS/JavaScript** + **MySQL**, strictly following **MVC Architecture** and **OOP principles**.
 
 ---
 
@@ -49,18 +49,8 @@ SmartVendingMachine/
 │       │   ├── FileHandler.java      # File I/O (sales_log.txt)
 │       │   └── DatabaseHelper.java   # JDBC connection
 │       └── config/
-│           └── CorsConfig.java       # CORS for Next.js
-├── frontend/                         # Next.js 15
-│   ├── app/
-│   │   ├── page.tsx                  # Home — vending machine UI
-│   │   └── admin/page.tsx            # Admin dashboard
-│   ├── components/
-│   │   ├── ItemCard.tsx
-│   │   ├── PaymentModal.tsx
-│   │   ├── AdminDashboard.tsx
-│   │   └── RestockPanel.tsx
-│   └── lib/
-│       └── api.ts                    # All fetch() calls
+│           └── CorsConfig.java       # CORS configuration
+│   └── index.html                    # Main UI — served at localhost:8080
 ├── database/
 │   └── schema.sql                    # MySQL — 4 tables
 ├── docs/
@@ -71,14 +61,14 @@ SmartVendingMachine/
 
 ## ✨ Features
 
-- 🛒 **200+ Products** across 12 categories with real-time stock
+- 🛒 **Products** across multiple categories with real-time stock
 - 💳 **Multi-payment** — Cash (with change), Card, NFC tap
 - 📦 **Admin Panel** — Add, edit, delete, restock items
 - 📊 **Sales Dashboard** — Full transaction history from MySQL
-- 🔐 **Operator Login** — Hashed password authentication
+- 🔐 **Operator Login** — Password authentication
 - ⚠️ **Low Stock Alerts** — Warning when quantity drops below 2
 - 📝 **Dual Logging** — MySQL transactions + sales_log.txt backup
-- 🔄 **Restock Audit** — Every restock logged with operator + timestamp
+- 🔄 **Restock Audit** — Every restock logged with timestamp
 
 ---
 
@@ -86,10 +76,10 @@ SmartVendingMachine/
 
 | Table | Purpose |
 |---|---|
-| `items` | 200+ products — name, price, quantity, category |
+| `items` | Products — name, price, quantity, category |
 | `transactions` | Every purchase — item, amount, payment type, timestamp |
-| `operators` | Admin/staff accounts with hashed passwords |
-| `restock_log` | Audit trail — who restocked what and when |
+| `operators` | Admin/staff accounts |
+| `restock_log` | Audit trail — what was restocked and when |
 
 ---
 
@@ -114,7 +104,7 @@ SmartVendingMachine/
 | Layer | Technology |
 |---|---|
 | Backend | Java 17 + Spring Boot 3.3.5 |
-| Frontend | Next.js 15 + Tailwind CSS |
+| Frontend | HTML + CSS + JavaScript |
 | Database | MySQL 8 |
 | ORM | Spring Data JPA / Hibernate |
 | API | REST (JSON) |
@@ -142,7 +132,6 @@ SmartVendingMachine/
 - Java 17+
 - Maven 3.9+
 - MySQL 8
-- Node.js 18+
 - IntelliJ IDEA
 
 ---
@@ -170,21 +159,12 @@ mvn spring-boot:run
 ```
 Runs at: `http://localhost:8080`
 
-### Step 4 — Load Sample Data
-
-```sql
-USE vendingdb;
--- Run the INSERT statements from database/schema.sql
-```
-
-### Step 5 — Frontend
+### Step 4 — Open in Browser
 
 ```
-cd frontend
-npm install
-npm run dev
+http://localhost:8080
 ```
-Runs at: `http://localhost:3000`
+Frontend (index.html) is served automatically by Spring Boot — no extra setup needed!
 
 ---
 
@@ -193,13 +173,11 @@ Runs at: `http://localhost:3000`
 | Issue | Solution |
 |---|---|
 | MySQL connection error | Check `application.properties` credentials |
-| CORS error | Verify `CorsConfig.java` allows `localhost:3000` |
+| CORS error | Verify `CorsConfig.java` allows `localhost:8080` |
 | Build fails | Run `mvn clean install` in backend folder |
 | Port in use | Change `server.port` in `application.properties` |
 
 ---
-
-## 📄 License
-
-This project is for educational purposes — OOP Lab, UET Lahore.
-```
+- Step 5 (npm) hata diya ✅
+- CORS `localhost:3000` → `localhost:8080` ✅
+- "200+ Products" hata diya (tumhare paas itne nahi hain) ✅
