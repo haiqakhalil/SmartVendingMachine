@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vend-O-Buddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        :root{
+          --bg:#0a0a0a;--surface:#141414;--surface2:#1c1c1c;--surface3:#242424;
+          --border:#2a2a2a;--border2:#333;
+          --text:#f0f0f0;--text2:#a0a0a0;--text3:#666;
+          --accent:#c8f135;--accent2:#a8d010;
+          --red:#ff4444;--orange:#ff8c00;--blue:#4da6ff;
+          --radius:12px;--radius-sm:8px;--radius-xs:6px;
+        }
+        body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+        .app{max-width:1100px;margin:0 auto;padding:0 20px 60px}
+        nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--border);margin-bottom:32px}
+        .logo{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--accent)}
+        .logo span{color:var(--text2);font-weight:400}
+        .nav-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:var(--radius-sm);padding:4px}
+        .nav-tab{padding:7px 16px;border-radius:var(--radius-xs);border:none;background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s}
+        .nav-tab.active{background:var(--surface3);color:var(--text);border:1px solid var(--border2)}
+        .nav-tab:hover:not(.active){color:var(--text)}
+        .hero{margin-bottom:40px}
+        .hero-label{font-size:11px;font-weight:600;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px}
+        .hero-title{font-family:'Space Mono',monospace;font-size:clamp(28px,5vw,48px);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:12px}
+        .hero-title .hl{color:var(--accent)}
+        .hero-sub{font-size:15px;color:var(--text2);font-weight:300}
+        .filter-row{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+        .chip{padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+        .chip.active{background:var(--accent);border-color:var(--accent);color:#0a0a0a;font-weight:600}
+        .chip:hover:not(.active){border-color:var(--text3);color:var(--text)}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:40px}
+        .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all 0.2s}
+        .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+        .card.selected{border-color:var(--accent);background:var(--surface2)}
+        .card-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-bottom:12px}
+        .badge-snacks{background:rgba(255,140,0,0.15);color:var(--orange)}
+        .badge-drinks{background:rgba(77,166,255,0.15);color:var(--blue)}
+        .badge-healthy{background:rgba(200,241,53,0.15);color:var(--accent)}
+        .badge-default{background:var(--surface3);color:var(--text3)}
+        .card-icon{font-size:28px;margin-bottom:12px;line-height:1}
+        .card-name{font-size:15px;font-weight:600;margin-bottom:4px;color:var(--text)}
+        .card-price{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:12px}
+        .card-stock{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)}
+        .stock-bar{flex:1;height:3px;background:var(--surface3);border-radius:2px;overflow:hidden}
+        .stock-fill{height:100%;border-radius:2px;transition:width 0.3s}
+        .stock-ok{background:var(--accent)}.stock-low{background:var(--orange)}.stock-out{background:var(--red)}
+        .card-select-btn{width:100%;margin-top:14px;padding:9px;border-radius:var(--radius-xs);border:1px solid var(--border2);background:transparent;color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+        .card-select-btn:hover,.card.selected .card-select-btn{background:var(--accent);border-color:var(--accent);color:#0a0a0a;font-weight:600}
+        .checkout-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:sticky;top:20px}
+        .panel-title{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--text3);text-transform:uppercase;margin-bottom:20px}
+        .selected-item{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px}
+        .si-name{font-weight:600;font-size:15px;color:var(--text);margin-bottom:2px}
+        .si-cat{font-size:12px;color:var(--text3);margin-bottom:10px}
+        .si-price{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--accent)}
+        .empty-state{text-align:center;padding:24px 0;color:var(--text3);font-size:13px;line-height:1.8}
+        .empty-state .icon{font-size:28px;margin-bottom:8px}
+        .pay-label{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+        .pay-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px}
+        .pay-btn{padding:10px 6px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:transparent;color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;text-align:center}
+        .pay-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(200,241,53,0.08)}
+        .pay-btn:hover:not(.active){border-color:var(--text3);color:var(--text)}
+        .cash-input{width:100%;padding:9px 12px;border-radius:var(--radius-xs);border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:12px;outline:none}
+        .cash-input:focus{border-color:var(--accent)}
+        .buy-btn{width:100%;padding:13px;border-radius:var(--radius-sm);border:none;background:var(--accent);color:#0a0a0a;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+        .buy-btn:hover{background:var(--accent2)}
+        .buy-btn:active{transform:scale(0.98)}
+        .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;z-index:1000;opacity:0;transform:translateY(12px);transition:all 0.25s;pointer-events:none;max-width:300px}
+        .toast.show{opacity:1;transform:translateY(0)}
+        .toast.success{background:var(--accent);color:#0a0a0a}
+        .toast.error{background:#ff4444;color:#fff}
+        .toast.warn{background:var(--orange);color:#0a0a0a}
+        .admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+        .admin-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+        .admin-section-title{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+        .table{width:100%;border-collapse:collapse;font-size:13px}
+        .table th{color:var(--text3);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:0 0 10px;text-align:left;border-bottom:1px solid var(--border)}
+        .table td{padding:10px 0;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+        .table td:first-child{color:var(--text);font-weight:500}
+        .table tbody tr:last-child td{border-bottom:none}
+        .stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:4px}
+        .stat-label{font-size:13px;color:var(--text3)}
+        .restock-row{display:flex;gap:8px;margin-bottom:8px}
+        .restock-input{flex:1;padding:8px 10px;border-radius:var(--radius-xs);border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none}
+        .restock-input:focus{border-color:var(--accent)}
+        .restock-btn{padding:8px 14px;border-radius:var(--radius-xs);border:1px solid var(--border2);background:transparent;color:var(--text);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;white-space:nowrap}
+        .restock-btn:hover{background:var(--accent);border-color:var(--accent);color:#0a0a0a;font-weight:600}
+        .layout-two{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+        .loading-overlay{text-align:center;padding:60px 0;color:var(--text3);font-size:14px}
+        .loading-spinner{width:28px;height:28px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @media(max-width:700px){.layout-two{grid-template-columns:1fr}.admin-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+<div class="app">
+    <nav>
+        <div class="logo">Vend<span>-O-</span>Buddy</div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchView('store')">Store</button>
+            <button class="nav-tab" onclick="switchView('admin')">Admin</button>
+        </div>
+    </nav>
+
+    <!-- STORE VIEW -->
+    <div id="view-store">
+        <div class="hero">
+            <div class="hero-label">Smart Vending Machine</div>
+            <h1 class="hero-title">Pick your <span class="hl">snack.</span><br>Pay your way.</h1>
+            <p class="hero-sub">Fresh items, multiple payment options, instant purchase.</p>
+        </div>
+        <div class="filter-row" id="filter-row"></div>
+        <div class="layout-two">
+            <div>
+                <div class="grid" id="item-grid">
+                    <div class="loading-overlay" style="grid-column:1/-1">
+                        <div class="loading-spinner"></div>
+                        Loading items from database...
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-panel">
+                <div class="panel-title">Checkout</div>
+                <div id="checkout-content">
+                    <div class="empty-state">
+                        <div class="icon">&#128722;</div>
+                        <div>Select an item<br>to get started</div>
+                    </div>
+                </div>
+                <div id="payment-section" style="display:none">
+                    <div class="pay-label">Payment method</div>
+                    <div class="pay-options">
+                        <button class="pay-btn active" onclick="selectPay('Cash',this)">&#128181; Cash</button>
+                        <button class="pay-btn" onclick="selectPay('Card',this)">&#128179; Card</button>
+                        <button class="pay-btn" onclick="selectPay('NFC',this)">&#128242; NFC</button>
+                    </div>
+                    <div id="cash-field">
+                        <input class="cash-input" type="number" id="cash-amount" placeholder="Amount given (Rs.)" min="0" step="1"/>
+                    </div>
+                    <button class="buy-btn" onclick="doBuy()">Buy Now &rarr;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN VIEW -->
+    <div id="view-admin" style="display:none">
+        <div class="hero">
+            <div class="hero-label">Admin Panel</div>
+            <h1 class="hero-title">Machine <span class="hl">Control</span></h1>
+        </div>
+        <div class="admin-grid">
+            <div class="admin-card">
+                <div class="admin-section-title">Inventory</div>
+                <table class="table" id="admin-table"></table>
+            </div>
+            <div class="admin-card">
+                <div class="admin-section-title">Restock Item</div>
+                <div class="restock-row">
+                    <select class="restock-input" id="restock-select"></select>
+                    <input class="restock-input" type="number" id="restock-qty" placeholder="Qty" min="1" style="max-width:70px"/>
+                    <button class="restock-btn" onclick="doRestock()">Restock</button>
+                </div>
+                <div style="margin-top:20px">
+                    <div class="admin-section-title">Stats</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" id="stats-grid"></div>
+                </div>
+            </div>
+            <div class="admin-card" style="grid-column:1/-1">
+                <div class="admin-section-title">Transaction Log</div>
+                <table class="table" id="tx-table"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    // ============================================================
+    // BACKEND API URL — yahan apna Spring Boot URL hai
+    // ============================================================
+    var API = "http://localhost:8080/api";
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    var ITEMS = [];
+    var TRANSACTIONS = [];
+    var selectedItem = null;
+    var paymentMethod = "Cash";
+    var activeFilter  = "All";
+
+    var badgeClass = {Snacks:"badge-snacks", Drinks:"badge-drinks", Healthy:"badge-healthy"};
+    var catIcons   = {All:"&#128717;", Snacks:"&#129472;", Drinks:"&#129380;", Healthy:"&#127806;"};
+    var iconMap    = {Snacks:"&#129472;", Drinks:"&#129380;", Healthy:"&#127806;"};
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    function stockPct(q)   { return Math.min(q / 10, 1) * 100; }
+    function stockClass(q) { return q === 0 ? "stock-out" : q < 2 ? "stock-low" : "stock-ok"; }
+
+    function showToast(msg, type) {
+      var t = document.getElementById("toast");
+      t.innerHTML = msg;
+      t.className = "toast " + (type || "success");
+      setTimeout(function(){ t.classList.add("show"); }, 10);
+      setTimeout(function(){ t.classList.remove("show"); }, 3400);
+    }
+
+    // ============================================================
+    // DATABASE SE ITEMS LOAD KARNA
+    // ============================================================
+    async function loadItems() {
+      try {
+        var res = await fetch(API + "/items");
+        if (!res.ok) throw new Error("Server error: " + res.status);
+        var data = await res.json();
+
+        ITEMS = data.map(function(i) {
+          return {
+            id:       i.id,
+            name:     i.name,
+            price:    i.price,
+            quantity: i.quantity,
+            category: i.category,
+            icon:     iconMap[i.category] || "&#128230;"
+          };
+        });
+
+        renderFilters();
+        renderGrid();
+        showToast("Items loaded from database!", "success");
+
+      } catch(err) {
+        console.error("API Error:", err);
+        document.getElementById("item-grid").innerHTML =
+          '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--red)">'
+          + '&#9888; Backend se connect nahi hua!<br>'
+          + '<span style="font-size:12px;color:var(--text3)">Make sure Spring Boot chal raha ho: http://localhost:8080</span>'
+          + '</div>';
+      }
+    }
+
+    // ============================================================
+    // DATABASE SE TRANSACTIONS LOAD KARNA
+    // ============================================================
+    async function loadTransactions() {
+      try {
+        var res = await fetch(API + "/transactions");
+        if (!res.ok) return;
+        var data = await res.json();
+        TRANSACTIONS = data.map(function(t) {
+          return {
+            time:   t.purchasedAt ? t.purchasedAt.substring(11,16) : "--:--",
+            item:   t.itemName,
+            amount: t.amount,
+            method: t.paymentType
+          };
+        });
+      } catch(e) {
+        console.warn("Transactions load nahi hue:", e);
+      }
+    }
+
+    // ============================================================
+    // FILTERS
+    // ============================================================
+    function renderFilters() {
+      var cats = ["All"];
+      ITEMS.forEach(function(i){ if(cats.indexOf(i.category) === -1) cats.push(i.category); });
+      var html = "";
+      cats.forEach(function(c){
+        html += '<button class="chip ' + (c === activeFilter ? "active" : "") + '" onclick="setFilter(\'' + c + '\')">'
+              + (catIcons[c] || "&#128230;") + " " + c + "</button>";
+      });
+      document.getElementById("filter-row").innerHTML = html;
+    }
+
+    function setFilter(cat) {
+      activeFilter = cat;
+      renderFilters();
+      renderGrid();
+    }
+
+    function filteredItems() {
+      return activeFilter === "All" ? ITEMS : ITEMS.filter(function(i){ return i.category === activeFilter; });
+    }
+
+    // ============================================================
+    // ITEM GRID
+    // ============================================================
+    function renderGrid() {
+      var items = filteredItems();
+      var html = "";
+      items.forEach(function(item) {
+        var isSel   = selectedItem && selectedItem.id === item.id;
+        var btnText = item.quantity === 0 ? "Out of Stock" : isSel ? "&#10003; Selected" : "Select";
+        html += '<div class="card ' + (isSel ? "selected" : "") + '" onclick="selectItem(' + item.id + ')">'
+              + '<div class="card-badge ' + (badgeClass[item.category] || "badge-default") + '">' + item.category + "</div>"
+              + '<div class="card-icon">' + item.icon + "</div>"
+              + '<div class="card-name">' + item.name + "</div>"
+              + '<div class="card-price">Rs. ' + item.price + "</div>"
+              + '<div class="card-stock">'
+              + '<div class="stock-bar"><div class="stock-fill ' + stockClass(item.quantity) + '" style="width:' + stockPct(item.quantity) + '%"></div></div>'
+              + "<span>" + (item.quantity === 0 ? "Out" : "Stock: " + item.quantity) + "</span>"
+              + "</div>"
+              + '<button class="card-select-btn">' + btnText + "</button>"
+              + "</div>";
+      });
+      document.getElementById("item-grid").innerHTML = html || '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3)">Koi item nahi mila</div>';
+    }
+
+    // ============================================================
+    // SELECT ITEM
+    // ============================================================
+    function selectItem(id) {
+      var item = null;
+      ITEMS.forEach(function(i){ if(i.id === id) item = i; });
+      if (!item || item.quantity === 0) { showToast("Out of stock!", "warn"); return; }
+      selectedItem = item;
+      renderGrid();
+      renderCheckout();
+    }
+
+    // ============================================================
+    // CHECKOUT
+    // ============================================================
+    function renderCheckout() {
+      if (!selectedItem) {
+        document.getElementById("checkout-content").innerHTML =
+          '<div class="empty-state"><div class="icon">&#128722;</div><div>Select an item<br>to get started</div></div>';
+        document.getElementById("payment-section").style.display = "none";
+        return;
+      }
+      document.getElementById("checkout-content").innerHTML =
+        '<div class="selected-item">'
+        + '<div style="font-size:24px;margin-bottom:8px">' + selectedItem.icon + "</div>"
+        + '<div class="si-name">' + selectedItem.name + "</div>"
+        + '<div class="si-cat">' + selectedItem.category + " &bull; Stock: " + selectedItem.quantity + "</div>"
+        + '<div class="si-price">Rs. ' + selectedItem.price + "</div>"
+        + "</div>";
+      document.getElementById("payment-section").style.display = "block";
+      updateCashField();
+    }
+
+    // ============================================================
+    // PAYMENT METHOD
+    // ============================================================
+    function selectPay(method, btn) {
+      paymentMethod = method;
+      document.querySelectorAll(".pay-btn").forEach(function(b){ b.classList.remove("active"); });
+      if (btn) btn.classList.add("active");
+      updateCashField();
+    }
+
+    function updateCashField() {
+      document.getElementById("cash-field").style.display = paymentMethod === "Cash" ? "block" : "none";
+    }
+
+    // ============================================================
+    // BUY — BACKEND API CALL
+    // ============================================================
+    async function doBuy() {
+      if (!selectedItem) { showToast("Pehle item select karo", "warn"); return; }
+      if (selectedItem.quantity === 0) { showToast("Out of stock!", "error"); return; }
+
+      var amountGiven = parseFloat(document.getElementById("cash-amount").value) || 0;
+
+      if (paymentMethod === "Cash") {
+        if (amountGiven < selectedItem.price) {
+          showToast("Kam paise! Rs." + selectedItem.price + " chahiye", "error");
+          return;
+        }
+      }
+
+      try {
+        var res = await fetch(API + "/vending/buy", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            itemId:      selectedItem.id,
+            paymentType: paymentMethod,
+            amountGiven: amountGiven
+          })
+        });
+
+        var msg = await res.text();
+
+        if (res.ok) {
+          // Show toast
+          if (paymentMethod === "Cash") {
+            var change = amountGiven - selectedItem.price;
+            showToast(change > 0 ? "Payment done! Change: Rs." + Math.round(change) : msg, "success");
+          } else {
+            showToast(msg, "success");
+          }
+
+          // Low stock check
+          if (selectedItem.quantity === 2) {
+            setTimeout(function(){
+              showToast("&#9888; Low stock: " + selectedItem.name, "warn");
+            }, 1600);
+          }
+
+          // Reload items from DB
+          await loadItems();
+          await loadTransactions();
+
+          selectedItem = null;
+          document.getElementById("cash-amount").value = "";
+          renderCheckout();
+          renderAdmin();
+
+        } else {
+          showToast(msg || "Kuch galat hua!", "error");
+        }
+
+      } catch(err) {
+        showToast("Backend se connect nahi hua!", "error");
+        console.error(err);
+      }
+    }
+
+    // ============================================================
+    // VIEW SWITCH
+    // ============================================================
+    function switchView(v) {
+      document.getElementById("view-store").style.display = v === "store" ? "block" : "none";
+      document.getElementById("view-admin").style.display = v === "admin" ? "block" : "none";
+      document.querySelectorAll(".nav-tab").forEach(function(t, i){
+        t.classList.toggle("active", (v==="store"&&i===0)||(v==="admin"&&i===1));
+      });
+      if (v === "admin") {
+        loadTransactions().then(function(){ renderAdmin(); });
+      }
+    }
+
+    // ============================================================
+    // ADMIN RENDER
+    // ============================================================
+    function renderAdmin() {
+      // Inventory table
+      var tbl = '<thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th></tr></thead><tbody>';
+      ITEMS.forEach(function(i){
+        var sc = i.quantity===0?"var(--red)":i.quantity<2?"var(--orange)":"var(--accent)";
+        var st = i.quantity===0?"Out of Stock":i.quantity<2?"&#9888; Low":"OK";
+        tbl += '<tr><td>' + i.icon + " " + i.name + "</td><td>" + i.category + "</td>"
+             + '<td style="font-family:\'Space Mono\',monospace">Rs.' + i.price + "</td>"
+             + '<td>' + i.quantity + "</td>"
+             + '<td style="color:' + sc + '">' + st + "</td></tr>";
+      });
+      document.getElementById("admin-table").innerHTML = tbl + "</tbody>";
+
+      // Restock dropdown
+      var sel = "";
+      ITEMS.forEach(function(i){ sel += '<option value="' + i.id + '">' + i.name + "</option>"; });
+      document.getElementById("restock-select").innerHTML = sel;
+
+      // Transactions table
+      var txTbl = document.getElementById("tx-table");
+      if (TRANSACTIONS.length === 0) {
+        txTbl.innerHTML = '<tr><td colspan="4" style="color:var(--text3);padding:16px 0;text-align:center">Koi transaction nahi hua abhi</td></tr>';
+      } else {
+        var rows = '<thead><tr><th>Time</th><th>Item</th><th>Amount</th><th>Payment</th></tr></thead><tbody>';
+        TRANSACTIONS.slice().reverse().forEach(function(t){
+          rows += '<tr><td>' + t.time + "</td><td>" + t.item + "</td>"
+                + '<td style="font-family:\'Space Mono\',monospace;color:var(--accent)">Rs.' + t.amount + "</td>"
+                + '<td>' + t.method + "</td></tr>";
+        });
+        txTbl.innerHTML = rows + "</tbody>";
+      }
+
+      // Stats
+      var total  = TRANSACTIONS.reduce(function(s,t){ return s+t.amount; }, 0);
+      var lowCnt = ITEMS.filter(function(i){ return i.quantity<2&&i.quantity>0; }).length;
+      var outCnt = ITEMS.filter(function(i){ return i.quantity===0; }).length;
+      document.getElementById("stats-grid").innerHTML =
+        stat("Rs."+total, "Total Sales", "") +
+        stat(TRANSACTIONS.length, "Transactions", "") +
+        stat(lowCnt, "Low Stock", "color:var(--orange)") +
+        stat(outCnt, "Out of Stock", "color:var(--red)");
+    }
+
+    function stat(num, label, style) {
+      return '<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:14px">'
+           + '<div class="stat-num" style="' + style + '">' + num + "</div>"
+           + '<div class="stat-label">' + label + "</div></div>";
+    }
+
+    // ============================================================
+    // RESTOCK — BACKEND API CALL
+    // ============================================================
+    async function doRestock() {
+      var id  = parseInt(document.getElementById("restock-select").value);
+      var qty = parseInt(document.getElementById("restock-qty").value) || 0;
+      if (qty <= 0) { showToast("Valid quantity daalo", "warn"); return; }
+
+      try {
+        var res = await fetch(API + "/restock", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({itemId: id, quantityAdded: qty})
+        });
+        var msg = await res.text();
+        showToast(msg, res.ok ? "success" : "error");
+        document.getElementById("restock-qty").value = "";
+        await loadItems();
+        renderAdmin();
+        renderGrid();
+      } catch(err) {
+        showToast("Backend se connect nahi hua!", "error");
+      }
+    }
+
+    // ============================================================
+    // INIT — Page load hone par database se data lo
+    // ============================================================
+    loadItems();
+</script>
+</body>
+</html>

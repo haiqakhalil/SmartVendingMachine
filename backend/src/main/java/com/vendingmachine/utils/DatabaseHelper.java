@@ -6,7 +6,7 @@ public class DatabaseHelper {
 
     static String url = "jdbc:mysql://localhost:3306/vendingdb";
     static String user = "root";
-    static String password = "yourpassword";
+    static String password = "2002";
 
     static Connection connection = null;
 

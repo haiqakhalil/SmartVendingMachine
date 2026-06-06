@@ -1,0 +1,5 @@
+2026-06-06 10:54:08 | Fanta Orange 250ml | Rs.50.0 | Cash
+2026-06-06 10:54:32 | Fanta Orange 250ml | Rs.50.0 | Cash
+2026-06-06 10:55:15 | Pepsi 250ml | Rs.50.0 | Cash
+2026-06-06 10:55:27 | Coca Cola 250ml | Rs.50.0 | Card
+2026-06-06 10:55:34 | 7UP 250ml | Rs.50.0 | NFC
